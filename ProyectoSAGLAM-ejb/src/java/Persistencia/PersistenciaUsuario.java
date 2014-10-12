@@ -22,7 +22,7 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
 
-    @PersistenceContext(unitName = "RepoSAGLAM-ejbPU")
+    @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
     @Override

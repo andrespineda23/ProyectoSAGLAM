@@ -19,7 +19,7 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaUniversidad implements PersistenciaUniversidadInterface {
 
-    @PersistenceContext(unitName = "RepoSAGLAM-ejbPU")
+    @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
     @Override
