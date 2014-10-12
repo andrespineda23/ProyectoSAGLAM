@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+   <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>SAGLAM - Grupo AJA</title>
+    </h:head>
+
+    <h:body >
+        <div id="top"  class="top" style="height: 80px; border-bottom: blue; border-color: darkblue" >
+            <fieldset style="position: absolute; left: 45px; top: 5px; height: 70px; width: 90%; border-radius: 10px; ">
+                
+                <strong><h:outputText style="position: absolute; top: 10px;" value="Proyecto Calidad de Software"/></strong>
+                <strong><h:outputText style="position: absolute; top: 35px;" value="Darwin Martinez"/></strong>
+                <strong><h:outputText style="position: absolute; top: 60px;" value="Grupo AJA"/></strong>
+                <h:graphicImage value="Imagenes/logo-universidad-central.jpg" width="256" height="73" style="position: absolute; left: 900px; top: 5px;"  />  
+
+            </fieldset>
+            <ui:insert name="banner">
+            </ui:insert>
+        </div>
+        <div>
+            <div id="left">
+            </div>
+            <div id="content" class="left_content">
+                <ui:insert name="body" />
+            </div>
+        </div>
+    </h:body>
+</html>
+

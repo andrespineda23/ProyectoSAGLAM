@@ -1,12 +1,154 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
     </h:head>
-    <h:body>
-        Hello from Facelets
+   <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText style="position: absolute; top: 60px; left: 10px" value="Informacion Usuario Conectado"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" actionListener="#{controlLogin.dispararDialogoRecuperar()}" process="@this"/>
+                        <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center" actionListener="#{controlLogin.dispararDialogoLogin()}" process="@this"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" actionListener="#{controlLogin.dispararDialogoRegistro()}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
+
+                        </fieldset>
+
+
+                    </p:panel>
+
+                    <p:dialog header="Registro Nuevo Usuario" draggable="false" resizable="false"
+                              closable="false" id="RegistroNuevoUsuario" widgetVar="RegistroNuevoUsuario" showEffect="fade" hideEffect="fade"
+                              width="435" height="350" modal="true" style="width: 435px; font-size: 12px;">
+
+                        <center><strong><h:outputText value="Ingrese la informacion del nuevo usuario" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <strong><h:outputText value="Nombres: " style="position: absolute; left: 50px; top: 70px;"/></strong>
+                        <p:inputText id="nuevoUsuarioNombre" value="#{controlLogin.nuevoUsuarioRegistrar.nombres}"  style="position: absolute; left: 200px; top: 75px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Apellidos: " style="position: absolute; left: 50px; top: 110px;"/></strong>
+                        <p:inputText id="nuevoUsuarioApellido" value="#{controlLogin.nuevoUsuarioRegistrar.apellidos}"  style="position: absolute; left: 200px; top: 115px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Correo Electronico: " style="position: absolute; left: 50px; top: 150px;"/></strong>
+                        <p:inputText id="nuevoUsuarioCorreo" value="#{controlLogin.nuevoUsuarioRegistrar.correoelectronico}"  style="position: absolute; left: 200px; top: 155px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="N# Documento: " style="position: absolute; left: 50px; top: 190px;"/></strong>
+                        <p:inputText id="nuevoUsuarioDocumento" value="#{controlLogin.nuevoUsuarioRegistrar.numerodocumento}"  style="position: absolute; left: 200px; top: 195px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Contraseña: " style="position: absolute; left: 50px; top: 230px;"/></strong>
+                        <p:password id="nuevoUsuarioContrasena" value="#{controlLogin.nuevoUsuarioRegistrar.contrasena}"  style="position: absolute; left: 200px; top: 235px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:password>
+
+                        <strong><h:outputText value="Tipo Usuario: " style="position: absolute; left: 50px; top: 270px;"/></strong>
+                        <p:selectOneMenu id="nuevoUsuarioTipoUsuario" value="#{controlLogin.nuevoUsuarioRegistrar.tipousuario}" style="position: absolute; left: 200px; top: 275px">
+                            <f:selectItem itemLabel="Seleccione T.U." itemValue="" />
+                            <f:selectItem itemLabel="ESTUDIANTE" itemValue="ESTUDIANTE" />
+                            <f:selectItem itemLabel="DOCENTE" itemValue="DOCENTE" />
+                            <f:selectItem itemLabel="EXTERNO" itemValue="EXTERNO" />
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 320px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 320px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="RegistroNuevoUsuario.hide()"/>
+
+                    </p:dialog>
+
+
+                    <p:dialog id="errorTipoUsuario" header="ATENCION !!!" widgetVar="errorTipoUsuario"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El tipo de usuario seleccionado no concuerda con el registrado en la Universidad" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorUsuarioRegistrado"  header="ATENCION !!!" widgetVar="errorUsuarioRegistrado"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El usuario ingresado ya se encuentra registrado en el sistema" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorDatosObligatorios"  header="ATENCION !!!" widgetVar="errorDatosObligatorios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Todos los campos son obligatorios" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorUsuarioNoExiste"  header="ATENCION !!!" widgetVar="errorUsuarioNoExiste"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El usuario ingresado no existe en el sistema" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
+                    <p:dialog id="loginUsuario"  header="Informacion" widgetVar="loginUsuario"  resizable="false" draggable="false" modal="true" height="150" width="350" style="font-size: 12px" closable="false">  
+                        <h:outputText value="Ingrese las credenciales del usuario" style="position: absolute; left: 20px; top: 15px; width: 185px; font-weight:bold; color: darkblue"/>
+
+                        <h:outputText value="Correo Electronico: " style="position: absolute; top: 40px; left: 30px;"/>
+                        <p:inputText id="correoLogin" value="#{controlLogin.contrasena}" style="position: absolute; top: 45px; left: 200px">
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:inputText>
+
+                        <h:outputText value="Contraseña: " style="position: absolute; top: 70px; left: 30px;"/>
+                        <p:password id="contrasenaLogin" value="#{controlLogin.contrasena}" style="position: absolute; top: 75px; left: 200px">
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:password>
+
+                        <p:commandButton value="Aceptar" style="position: absolute; top: 120px; left: 200px" actionListener="#{controlLogin.loginUsuario()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; top: 120px; left: 280px" actionListener="#{controlLogin.cancelarLoginUsuario()}" process="@this" onclick="loginUsuario.hide()"/> 
+
+                    </p:dialog>
+
+                    <p:dialog id="recuperarContrasena"  header="Informacion" widgetVar="recuperarContrasena"  resizable="false" draggable="false" modal="true" height="150" width="350" style="font-size: 12px" closable="false">  
+                        <h:outputText value="Ingrese las credenciales del usuario" style="position: absolute; left: 20px; top: 15px; width: 185px; font-weight:bold; color: darkblue"/>
+
+                        <h:outputText value="Correo Electronico: " style="position: absolute; top: 40px; left: 30px;"/>
+                        <p:inputText id="correoRecuperar" value="#{controlLogin.contrasena}" style="position: absolute; top: 45px; left: 200px">
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:inputText>
+
+                        <h:outputText value="N# Documento: " style="position: absolute; top: 70px; left: 30px;"/>
+                        <p:inputText id="contrasenaRecuperar" value="#{controlLogin.numDocumento}" style="position: absolute; top: 75px; left: 200px">
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:inputText>
+
+                        <p:commandButton value="Aceptar" style="position: absolute; top: 120px; left: 200px" actionListener="#{controlLogin.recuperarContrasenaUsuario()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; top: 120px; left: 280px" actionListener="#{controlLogin.cancelarRecuperarContrasena()}" process="@this" onclick="recuperarContrasena.hide()"/> 
+
+                    </p:dialog>
+
+
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 
