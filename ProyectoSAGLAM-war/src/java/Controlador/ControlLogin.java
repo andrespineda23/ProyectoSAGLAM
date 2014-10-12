@@ -35,9 +35,9 @@ public class ControlLogin implements Serializable {
     public ControlLogin() {
 
         contrasenaRecuperada = null;
-        correo = "";
-        contrasena = "";
-        numDocumento = "";
+        correo = null;
+        contrasena = null;
+        numDocumento = null;
 
         nuevoUsuarioRegistrar = new Usuario();
         usuarioLogin = null;
@@ -46,14 +46,14 @@ public class ControlLogin implements Serializable {
 
     public void dispararDialogoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:recuperarContrasena");
-        context.execute("recuperarContrasena.show()");
+        context.update("form:RegistroNuevoUsuario");
+        context.execute("RegistroNuevoUsuario.show()");
     }
 
     public void dispararDialogoLogin() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:recuperarContrasena");
-        context.execute("recuperarContrasena.show()");
+        context.update("form:loginUsuario");
+        context.execute("loginUsuario.show()");
     }
 
     public void dispararDialogoRecuperar() {
@@ -150,12 +150,12 @@ public class ControlLogin implements Serializable {
             if (correo != null && contrasena != null) {
                 context.execute("loginUsuario.hide()");
                 Usuario user = administrarLogin.obtenerUsuarioLogin(correo, contrasena);
-                if (user != null) {
+                if (user == null) {
                     context.execute("errorUsuarioNoExiste.show()");
                 } else {
                     usuarioLogin = user;
-                    contrasena = "";
-                    correo = "";
+                    contrasena = null;
+                    correo = null;
                     FacesMessage msg = new FacesMessage("Información", "Ingreso exitoso");
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                     context.update("form:growl");
@@ -172,8 +172,8 @@ public class ControlLogin implements Serializable {
     }
 
     public void cancelarLoginUsuario() {
-        contrasena = "";
-        correo = "";
+        contrasena = null;
+        correo = null;
     }
 
     public void recuperarContrasenaUsuario() {
@@ -200,8 +200,8 @@ public class ControlLogin implements Serializable {
     }
 
     public void cancelarRecuperarContrasena() {
-        correo = "";
-        contrasena = "";
+        correo = null;
+        contrasena = null;
     }
 
     public Usuario getNuevoUsuarioRegistrar() {
