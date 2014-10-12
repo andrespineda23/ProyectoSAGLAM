@@ -91,7 +91,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     public Usuario buscarUsuarioSecuencia(BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT u FROM Usuario u WHERE u.secuencia = :secuencia");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Usuario usuario = (Usuario) query.getSingleResult();
@@ -106,7 +106,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     public Usuario buscarUsuarioPorCorreo_Contrasena(String correo, String contrasena) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.contrasena = :contrasena");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.contrasena = :contrasena");
             query.setParameter("correo", correo);
             query.setParameter("contrasena", contrasena);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -122,7 +122,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     public Usuario buscarUsuarioPorCorreo(String correo) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo");
             query.setParameter("correo", correo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Usuario usuario = (Usuario) query.getSingleResult();
@@ -137,7 +137,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     public String buscarContrasenaUsuarioPorCorreo_NumeroDocumento(String correo, String numDocumento) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento =: numDocumento");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento =: numDocumento");
             query.setParameter("correo", correo);
             query.setParameter("numDocumento", numDocumento);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -157,7 +157,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     public Usuario buscarUsuarioRegistradoEnSistema(String correo, String numDocumento) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento =: numDocumento");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento =: numDocumento");
             query.setParameter("correo", correo);
             query.setParameter("numDocumento", numDocumento);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
