@@ -86,6 +86,19 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
             return null;
         }
     }
+    
+     public List<Usuario> buscarUsuariosNOBloquedaos() {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT u FROM Usuario u where u.activo = true");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Usuario> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error v PersistenciaUsuario : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public Usuario buscarUsuarioSecuencia(BigInteger secuencia) {
@@ -165,6 +178,22 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
             return usuario;
         } catch (Exception e) {
             System.out.println("Error buscarUsuarioRegistradoEnSistema PersistenciaUsuario : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+     public Usuario validarCambioContrasenaUsuario(String correo, String contrasena) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.contrasena = :contrasena");
+            query.setParameter("correo", correo);
+            query.setParameter("contrasena", contrasena);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Usuario usuario = (Usuario) query.getSingleResult();
+            return usuario;
+        } catch (Exception e) {
+            System.out.println("Error validarCambioContrasenaUsuario PersistenciaUsuario : " + e.toString());
             return null;
         }
     }

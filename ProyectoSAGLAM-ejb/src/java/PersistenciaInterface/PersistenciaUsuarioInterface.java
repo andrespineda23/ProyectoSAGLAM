@@ -34,4 +34,7 @@ public interface PersistenciaUsuarioInterface {
 
     public Usuario buscarUsuarioRegistradoEnSistema(String correo, String numDocumento);
 
+    public List<Usuario> buscarUsuariosNOBloquedaos();
+
+    public Usuario validarCambioContrasenaUsuario(String correo, String contrasena);
 }
