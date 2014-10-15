@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="ELIMINAR" value="Eliminar" style="position: absolute; top: 45px; left: 10px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
+                        <p:commandButton id="BUSCAR" value="Buscar" style="position: absolute; top: 45px; left: 400px; text-align: center" actionListener="#{controlBloquearUsuario.activarCtrlF11()}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
+                            <p:dataTable id="datosBloquearUsuario" var="info" rowKey="#{info.secuencia}"  
+                                         rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
+                                         value="#{controlBloquearUsuario.listUsuario}" 
+                                         scrollable="true"
+                                         scrollHeight="#{controlBloquearUsuario.tamano}"
+                                         scrollWidth="830"
+                                         filteredValue="#{controlBloquearUsuario.filtrarUsuario}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="false" 
+                                         selection="#{controlBloquearUsuario.usuarioSeleccionado}"
+                                         selectionMode="single"
+                                         >
+                                <p:ajax event="filter" listener="#{controlBloquearUsuario.eventoFiltrar()}"/>
+
+                                <p:column headerText="Correo Electronico" sortBy="#{info.correoelectronico}" filterBy="#{info.correoelectronico}" filterMatchMode="contains" id="codigo" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.correoelectronico}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.correoelectronico}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 0)}" process="@this"/> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                </p:column>
+                                <p:column headerText="Número Documento" sortBy="#{info.numerodocumento}" filterBy="#{info.numerodocumento}" filterMatchMode="contains" id="descripcion" width="160" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.numerodocumento}"  /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.numerodocumento}" maxlength="40" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 1)}" process="@this"/> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                </p:column>
+
+
+
+                            </p:dataTable>
+                        </fieldset>
+
+
+                    </p:panel>
+
+
+
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
