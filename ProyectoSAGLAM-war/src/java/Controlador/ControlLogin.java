@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controlador;
 
 import AdministrarInterface.AdministrarLoginInterface;
@@ -17,21 +13,36 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
+ * Este controlador es el encargado de la pagina inicial del sistema. Cuando el
+ * usuario ingresa, la pagina de login sera la inicial para todos. Se encarga de
+ * los procesos de ingreso al sistema, registro de usuario y recordar contraseña
+ * de un usuario
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @ManagedBean
 @SessionScoped
 public class ControlLogin implements Serializable {
 
+    //Parametros
+    //Inyeccion del EJB Adminitrador del controlador
+    //este administrador controla todo los procesos necesarios
+    //que el controlador necesite
     @EJB
     AdministrarLoginInterface administrarLogin;
 
+    //Variable del usuario nuevo que se puede registrar
     private Usuario nuevoUsuarioRegistrar;
+    //variable del usuario que ingresa al sistema
     private Usuario usuarioLogin;
+    //Variables que almacenan la informacion de correo, contraseña y numero de documento de un usuario
     private String correo, contrasena, numDocumento;
+    //Si se presenta un proceso de recuperar contraseña, esta variable se encargara de almacenarla
     private String contrasenaRecuperada;
 
+    /**
+     * Constructor del controlador login
+     */
     public ControlLogin() {
 
         contrasenaRecuperada = null;
@@ -44,24 +55,41 @@ public class ControlLogin implements Serializable {
 
     }
 
+    /**
+     * Metodo encargado de disparar el dialogo del registro de un nuevo usuario
+     */
     public void dispararDialogoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:RegistroNuevoUsuario");
         context.execute("RegistroNuevoUsuario.show()");
     }
 
+    /**
+     * Metodo encargado de disparar el dialogo del ingreso al sistema
+     */
     public void dispararDialogoLogin() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:loginUsuario");
         context.execute("loginUsuario.show()");
     }
 
+    /**
+     * Metodo encargado de disparar el dialogo de recuperar la contraseña de un
+     * usuario
+     */
     public void dispararDialogoRecuperar() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:recuperarContrasena");
         context.execute("recuperarContrasena.show()");
     }
 
+    /**
+     * Metodo encargado de validar que el usuario registrado para el nuevo
+     * ingreso no se encuentre ya registrado en el sistema
+     *
+     * @return Retorna true si el usuario se encuentra registrado en el sistema,
+     * false si no esta almacenado
+     */
     public boolean validarUsuarioYaRegistrado() {
         boolean retorno = true;
         Usuario usuario = administrarLogin.validarUsuarioRegistradoEnSistema(nuevoUsuarioRegistrar.getCorreoelectronico(), nuevoUsuarioRegistrar.getNumerodocumento());
@@ -71,6 +99,13 @@ public class ControlLogin implements Serializable {
         return retorno;
     }
 
+    /**
+     * Metodo encargado de validar los datos del ingreso de un nuevo registro de
+     * usuario
+     *
+     * @return Retorna true si todos los campos estan completos, false en caso
+     * de que un campo se encuentre vacio
+     */
     public boolean validarDatosObligatorios() {
         boolean retorno = true;
         if (nuevoUsuarioRegistrar.getNombres() != null
@@ -86,6 +121,13 @@ public class ControlLogin implements Serializable {
         return retorno;
     }
 
+    /**
+     * Metodo que valida que el tipo de usuario seleccionado por el usuario
+     * corresponda al registrado en la universidad
+     *
+     * @return Retorna true si el nuevo usuario corresponde con el tipo de
+     * usuario seleccionado, false en caso contrario
+     */
     public boolean validarTipoUsuarioNuevoRegistro() {
         boolean retorno = true;
         String respuesta = administrarLogin.validarTipoUsuarioNuevoRegistro(nuevoUsuarioRegistrar.getCorreoelectronico(), nuevoUsuarioRegistrar.getNumerodocumento(), nuevoUsuarioRegistrar.getTipousuario());
@@ -101,6 +143,9 @@ public class ControlLogin implements Serializable {
         return retorno;
     }
 
+    /**
+     * Metodo encargado de registrar un nuevo usuario en el sistema
+     */
     public void registarNuevoUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -140,10 +185,18 @@ public class ControlLogin implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de limpiar la informacion del registro del nuevo usuario
+     */
     public void cancelarNuevoRegistroUsuario() {
         nuevoUsuarioRegistrar = new Usuario();
     }
 
+    /**
+     * Metodo encargado de realizar el proceso de ingreso al sistema, validando
+     * que los campos de correo y contraseña se encuentren correctos y
+     * realizando la consulta del usuario por los parametros
+     */
     public void loginUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -171,11 +224,19 @@ public class ControlLogin implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de limpiar las variables de ingreso al sistema despues
+     * de haber cancelado el proceso
+     */
     public void cancelarLoginUsuario() {
         contrasena = null;
         correo = null;
     }
 
+    /**
+     * Metodo encargado de recuperar la contraseña de un usuario por medio de su
+     * correo y numero de documento
+     */
     public void recuperarContrasenaUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -199,11 +260,16 @@ public class ControlLogin implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de limpiar la informacion del proceso de recuperar
+     * contraseña despues que se cancelo el proceso
+     */
     public void cancelarRecuperarContrasena() {
         correo = null;
         contrasena = null;
     }
 
+    //GET - SET Variables
     public Usuario getNuevoUsuarioRegistrar() {
         return nuevoUsuarioRegistrar;
     }
