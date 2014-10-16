@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Persistencia;
 
 import Entidades.Universidad;
@@ -13,12 +8,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author ANDRES PINEDA
+ * Persistencia Universidad, la cual contiene la informacion de los procesos realizados por dicha persistencia
+ * @author Andres Pineda
  */
 @Stateless
 public class PersistenciaUniversidad implements PersistenciaUniversidadInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 

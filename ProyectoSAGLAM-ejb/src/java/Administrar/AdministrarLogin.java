@@ -13,14 +13,21 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
- * @author ANDRES PINEDA
+ * Administrador del controlador de login, el cual se encarga de administrar los procesos de
+ * registro de usuarios, ingreso al sistema, validaciones y proceso de recordar contraseña.
+ * @author Andres Pineda
  */
 @Stateless
 public class AdministrarLogin implements AdministrarLoginInterface {
 
+    /**
+     * Inyeccion del EJB de la PersistenciaUniversidad
+     */
     @EJB
     PersistenciaUniversidadInterface persistenciaUniversidad;
+    /**
+     * Inyeccion del EJB de la PersistenciaUniversidad
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
 
