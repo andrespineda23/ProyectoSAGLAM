@@ -32,9 +32,15 @@ public class ControlCambioContrasena implements Serializable {
         usuarioRecibido = new Usuario();
         nuevaConstrasena = null;
         usuarioRecibido.setContrasena(null);
-        
+
     }
 
+    /**
+     * *
+     * metodo encargado de recivir el usuario de la pantalla anterior
+     *
+     * @param llegoUsuario Usuario Actual
+     */
     public void recibirUsuario(Usuario llegoUsuario) {
         try {
             usuarioRecibido = llegoUsuario;
@@ -43,6 +49,9 @@ public class ControlCambioContrasena implements Serializable {
         }
     }
 
+    /**
+     * Valida que los campos no esten vacios
+     */
     public void validarCampos() {
         if (usuarioRecibido.getContrasena() == null && nuevaConstrasena == null) {
             camposVacios = false;
@@ -51,23 +60,27 @@ public class ControlCambioContrasena implements Serializable {
         }
     }
 
+    /**
+     * Metodo de cambiar la contraseña digitada por el usuario por pantalla
+     *
+     */
     public void cambiarContrasena() {
         RequestContext context = RequestContext.getCurrentInstance();
         validarCampos();
         Usuario validarU;
         if (camposVacios == true) {
             validarU = administrarCambioContrasena.validarContrasenaAntigua(usuarioRecibido);
-                if(validarU==null){
-                mensajeValidacion="Contraseña Incorrecta";
-                }else{
+            if (validarU == null) {
+                mensajeValidacion = "Contraseña Incorrecta";
+            } else {
                 usuarioRecibido.setContrasena(nuevaConstrasena);
                 administrarCambioContrasena.editarUsuario(usuarioRecibido);
                 mensajeValidacion = "Cambio Realizado Con Exito";
-                }
+            }
         } else {
             mensajeValidacion = "Llenar Los Campos Requeridos";
         }
-        System.out.println("Mensaje Validación : "+mensajeValidacion);
+        System.out.println("Mensaje Validación : " + mensajeValidacion);
         context.update("form:mensajeMostrar");
         context.execute("mensajeMostrar.show()");
 

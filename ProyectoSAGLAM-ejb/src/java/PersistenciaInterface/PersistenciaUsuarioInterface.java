@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'Usuario' de la base de datos.
  *
  * @author ANDRES PINEDA
  */
@@ -34,7 +36,22 @@ public interface PersistenciaUsuarioInterface {
 
     public Usuario buscarUsuarioRegistradoEnSistema(String correo, String numDocumento);
 
+    /**
+     * *
+     * Metodo encargado de buscar todos los usuarios que no estan bloqueados en
+     * la base de datos
+     *
+     * @return una lista de usuarios
+     */
     public List<Usuario> buscarUsuariosNOBloquedaos();
 
+    /**
+     * *
+     * Metodo encargado de buscar el usuario con los datos ingresados
+     *
+     * @param correo Correo del usuario
+     * @param contrasena Contrasena del usuario
+     * @return Retorna un objeto usuario
+     */
     public Usuario validarCambioContrasenaUsuario(String correo, String contrasena);
 }

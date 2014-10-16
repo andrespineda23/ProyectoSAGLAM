@@ -51,6 +51,11 @@ public class ControlBloquearUsuario implements Serializable {
         System.out.println("controlBloquearUsuario Constructor");
     }
 
+    /**
+     * *
+     * Metodo encargado de cambiar la bandera tipoLista para el manejo de la
+     * lista que se esta usando
+     */
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlClasesPensiones.eventoFiltrar \n");
@@ -63,6 +68,14 @@ public class ControlBloquearUsuario implements Serializable {
         }
     }
 
+    /**
+     * *
+     * Metodo encargado de capturar la posicion en la que el usuario a
+     * seleccionado
+     *
+     * @param indice fila
+     * @param celda columna
+     */
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -73,28 +86,10 @@ public class ControlBloquearUsuario implements Serializable {
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
-        try {
-            System.out.println("\n ENTRE A ControlClasesPensiones.asignarIndex \n");
-            index = indice;
-            if (LND == 0) {
-                tipoActualizacion = 0;
-            } else if (LND == 1) {
-                tipoActualizacion = 1;
-                System.out.println("Tipo Actualizacion: " + tipoActualizacion);
-            } else if (LND == 2) {
-                tipoActualizacion = 2;
-            }
-
-        } catch (Exception e) {
-            System.out.println("ERROR ControlClasesPensiones.asignarIndex ERROR : " + e.getMessage());
-        }
-    }
-
-    public void activarAceptar() {
-        aceptar = false;
-    }
-
+    /**
+     * *
+     * Metodo encargado de abrirl los filtros de las columnas
+     */
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -120,6 +115,12 @@ public class ControlBloquearUsuario implements Serializable {
         }
     }
 
+    /**
+     * *
+     * Este metodo se encarga de que el usuario que ha sido seleccionado y que
+     * decide bloquear cambia su campo activo a false para que no sea mas
+     * visible
+     */
     public void bloquearUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
