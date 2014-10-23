@@ -27,17 +27,26 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
 
     @Override
     public void crearUsuario(Usuario usuario) {
-        em.clear();
-        EntityTransaction tx = em.getTransaction();
+        System.out.println("PERSISTENCIA Nombre: " + usuario.getNombres());
+        System.out.println("PERSISTENCIA Apellido: " + usuario.getApellidos());
+        System.out.println("PERSISTENCIA Contraseña: " + usuario.getContrasena());
+        System.out.println("PERSISTENCIA Correo Electronico: " + usuario.getCorreoelectronico());
+        System.out.println("PERSISTENCIA Numero Documento: " + usuario.getNumerodocumento());
+        System.out.println("PERSISTENCIA Tipo Usuario: " + usuario.getTipousuario());
+        System.out.println("PERSISTENCIA Secuencia: " + usuario.getSecuencia());
+        System.out.println("PERSISTENCIA Activo: " + usuario.getActivo());
+        //em.clear();
+        //EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
+          //  tx.begin();
+
             em.persist(usuario);
-            tx.commit();
+           // tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearUsuario PersistenciaUsuario : " + e.toString());
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            System.err.println("Error crearUsuario PersistenciaUsuario : " + e.toString());
+           // if (tx.isActive()) {
+             //   tx.rollback();
+           // }
         }
     }
 
@@ -86,8 +95,8 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
             return null;
         }
     }
-    
-     public List<Usuario> buscarUsuariosNOBloquedaos() {
+
+    public List<Usuario> buscarUsuariosNOBloquedaos() {
         try {
             em.clear();
             Query query = em.createQuery("SELECT u FROM Usuario u where u.activo = true");
@@ -169,21 +178,23 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     @Override
     public Usuario buscarUsuarioRegistradoEnSistema(String correo, String numDocumento) {
         try {
+            System.out.println("PersistenciaUsuario Correo " + correo);
+            System.out.println("PersistenciaUsuario numDocumento " + numDocumento);
             em.clear();
-            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento =: numDocumento");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento = :numDocumento");
             query.setParameter("correo", correo);
             query.setParameter("numDocumento", numDocumento);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Usuario usuario = (Usuario) query.getSingleResult();
             return usuario;
         } catch (Exception e) {
-            System.out.println("Error buscarUsuarioRegistradoEnSistema PersistenciaUsuario : " + e.toString());
+            System.err.println("Error buscarUsuarioRegistradoEnSistema PersistenciaUsuario : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-     public Usuario validarCambioContrasenaUsuario(String correo, String contrasena) {
+    public Usuario validarCambioContrasenaUsuario(String correo, String contrasena) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.contrasena = :contrasena");

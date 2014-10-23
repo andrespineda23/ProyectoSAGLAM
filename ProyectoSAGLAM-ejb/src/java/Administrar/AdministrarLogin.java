@@ -13,8 +13,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- * Administrador del controlador de login, el cual se encarga de administrar los procesos de
- * registro de usuarios, ingreso al sistema, validaciones y proceso de recordar contraseña.
+ * Administrador del controlador de login, el cual se encarga de administrar los
+ * procesos de registro de usuarios, ingreso al sistema, validaciones y proceso
+ * de recordar contraseña.
+ *
  * @author Andres Pineda
  */
 @Stateless
@@ -34,9 +36,17 @@ public class AdministrarLogin implements AdministrarLoginInterface {
     @Override
     public void crearNuevoUsuario(Usuario usuario) {
         try {
+            System.out.println("ADMINISTRAR Nombre: " + usuario.getNombres());
+            System.out.println("ADMINISTRAR Apellido: " + usuario.getApellidos());
+            System.out.println("ADMINISTRAR Contraseña: " + usuario.getContrasena());
+            System.out.println("ADMINISTRAR Correo Electronico: " + usuario.getCorreoelectronico());
+            System.out.println("ADMINISTRAR Numero Documento: " + usuario.getNumerodocumento());
+            System.out.println("ADMINISTRAR Tipo Usuario: " + usuario.getTipousuario());
+            System.out.println("ADMINISTRAR Secuencia: " + usuario.getSecuencia());
+            System.out.println("ADMINISTRAR Activo: " + usuario.getActivo());
             persistenciaUsuario.crearUsuario(usuario);
         } catch (Exception e) {
-            System.out.println("Error crearNuevoUsuario AdministrarLogin : " + e.toString());
+            System.err.println("Error crearNuevoUsuario AdministrarLogin : " + e.toString());
         }
     }
 

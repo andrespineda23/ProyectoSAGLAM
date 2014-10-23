@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import AdministrarInterface.AdministrarLoginInterface;
@@ -108,6 +107,13 @@ public class ControlLogin implements Serializable {
      */
     public boolean validarDatosObligatorios() {
         boolean retorno = true;
+        System.out.println(" Nombre: " + nuevoUsuarioRegistrar.getNombres());
+        System.out.println(" Apellido: " + nuevoUsuarioRegistrar.getApellidos());
+        System.out.println(" Contraseña: " + nuevoUsuarioRegistrar.getContrasena());
+        System.out.println(" Correo Electronico: " + nuevoUsuarioRegistrar.getCorreoelectronico());
+        System.out.println(" Numero Documento: " + nuevoUsuarioRegistrar.getNumerodocumento());
+        System.out.println(" Tipo Usuario: " + nuevoUsuarioRegistrar.getTipousuario());
+
         if (nuevoUsuarioRegistrar.getNombres() != null
                 && nuevoUsuarioRegistrar.getApellidos() != null
                 && nuevoUsuarioRegistrar.getContrasena() != null
@@ -150,17 +156,28 @@ public class ControlLogin implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             boolean datosOk = validarDatosObligatorios();
+            System.out.println("1 datosOk : " + datosOk);
             if (datosOk == true) {
+                System.out.println("2 datosOk : " + datosOk);
                 boolean usuarioOk = validarUsuarioYaRegistrado();
                 if (usuarioOk == true) {
+                    System.out.println("3 datosOk : " + datosOk);
                     boolean tipoUsuarioOk = validarTipoUsuarioNuevoRegistro();
                     if (tipoUsuarioOk == true) {
+                        System.out.println("4 datosOk : " + datosOk);
                         int k = 1;
                         BigInteger secuencia = new BigInteger(String.valueOf(k));
                         nuevoUsuarioRegistrar.setSecuencia(secuencia);
                         nuevoUsuarioRegistrar.setActivo(true);
-
-                        administrarLogin.crearNuevoUsuario(usuarioLogin);
+                        System.out.println(" Nombre: " + nuevoUsuarioRegistrar.getNombres());
+                        System.out.println(" Apellido: " + nuevoUsuarioRegistrar.getApellidos());
+                        System.out.println(" Contraseña: " + nuevoUsuarioRegistrar.getContrasena());
+                        System.out.println(" Correo Electronico: " + nuevoUsuarioRegistrar.getCorreoelectronico());
+                        System.out.println(" Numero Documento: " + nuevoUsuarioRegistrar.getNumerodocumento());
+                        System.out.println(" Tipo Usuario: " + nuevoUsuarioRegistrar.getTipousuario());
+                        System.out.println(" Secuencia: " + nuevoUsuarioRegistrar.getSecuencia());
+                        System.out.println(" Activo: " + nuevoUsuarioRegistrar.getActivo());
+                        administrarLogin.crearNuevoUsuario(nuevoUsuarioRegistrar);
 
                         nuevoUsuarioRegistrar = new Usuario();
 
@@ -200,6 +217,8 @@ public class ControlLogin implements Serializable {
     public void loginUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
+            System.out.println("ControlLogin Correo: " + correo);
+            System.out.println("ControlLogin Contraseña:" + contrasena);
             if (correo != null && contrasena != null) {
                 context.execute("loginUsuario.hide()");
                 Usuario user = administrarLogin.obtenerUsuarioLogin(correo, contrasena);
