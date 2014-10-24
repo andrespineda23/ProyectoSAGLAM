@@ -9,6 +9,7 @@ import AdministrarInterface.AdministrarLoginInterface;
 import Entidades.Usuario;
 import PersistenciaInterface.PersistenciaUniversidadInterface;
 import PersistenciaInterface.PersistenciaUsuarioInterface;
+import java.math.BigInteger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -89,6 +90,17 @@ public class AdministrarLogin implements AdministrarLoginInterface {
             Usuario user = persistenciaUsuario.buscarUsuarioRegistradoEnSistema(correo, documento);
             return user;
         } catch (Exception e) {
+            System.out.println("Error validarUsuarioRegistradoEnSistema AdministrarLogin : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override 
+    public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia){
+        try{
+        Usuario usuario = persistenciaUsuario.buscarUsuarioSecuencia(secuencia);
+        return usuario;
+        }catch(Exception e){
             System.out.println("Error validarUsuarioRegistradoEnSistema AdministrarLogin : " + e.toString());
             return null;
         }
