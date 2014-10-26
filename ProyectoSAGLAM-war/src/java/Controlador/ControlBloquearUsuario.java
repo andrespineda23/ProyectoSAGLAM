@@ -48,7 +48,6 @@ public class ControlBloquearUsuario implements Serializable {
         permitirIndex = true;
         guardado = true;
         tamano = 270;
-        System.out.println("controlBloquearUsuario Constructor");
     }
 
     /**
@@ -57,14 +56,8 @@ public class ControlBloquearUsuario implements Serializable {
      * lista que se esta usando
      */
     public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlClasesPensiones.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-        } catch (Exception e) {
-            System.out.println("ERROR ControlClasesPensiones eventoFiltrar ERROR : " + e.getMessage());
+        if (tipoLista == 0) {
+            tipoLista = 1;
         }
     }
 

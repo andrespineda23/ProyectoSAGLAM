@@ -28,7 +28,7 @@
 
                     <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="ELIMINAR" value="Eliminar" style="position: absolute; top: 45px; left: 10px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
+                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 10px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
                         <p:commandButton id="BUSCAR" value="Buscar" style="position: absolute; top: 45px; left: 400px; text-align: center" actionListener="#{controlBloquearUsuario.activarCtrlF11()}" process="@this"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
@@ -93,16 +93,9 @@
 
                                 </p:column>
 
-
-
                             </p:dataTable>
                         </fieldset>
-
-
                     </p:panel>
-
-
-
 
                 </h:form>
             </ui:define>

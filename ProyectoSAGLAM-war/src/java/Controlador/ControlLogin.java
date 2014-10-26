@@ -38,11 +38,26 @@ public class ControlLogin implements Serializable {
     private String correo, contrasena, numDocumento;
     //Si se presenta un proceso de recuperar contraseña, esta variable se encargara de almacenarla
     private String contrasenaRecuperada;
+    //
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion;
+    private boolean permisoIngresar;
+    private String infoUsuarioConectado;
 
     /**
      * Constructor del controlador login
      */
     public ControlLogin() {
+
+        infoUsuarioConectado = "Información Usuario Conectado";
+        permisoIngresar = false;
+        permisoReservar = true;
+        permisoPrestamo = true;
+        permisoDocPracticas = true;
+        permisoEstadisticas = true;
+        permisoGuias = true;
+        permisoUsuario = true;
+        permisoMateria = true;
+        permisoCerrarSesion = true;
 
         contrasenaRecuperada = null;
         correo = null;
@@ -107,12 +122,6 @@ public class ControlLogin implements Serializable {
      */
     public boolean validarDatosObligatorios() {
         boolean retorno = true;
-        System.out.println(" Nombre: " + nuevoUsuarioRegistrar.getNombres());
-        System.out.println(" Apellido: " + nuevoUsuarioRegistrar.getApellidos());
-        System.out.println(" Contraseña: " + nuevoUsuarioRegistrar.getContrasena());
-        System.out.println(" Correo Electronico: " + nuevoUsuarioRegistrar.getCorreoelectronico());
-        System.out.println(" Numero Documento: " + nuevoUsuarioRegistrar.getNumerodocumento());
-        System.out.println(" Tipo Usuario: " + nuevoUsuarioRegistrar.getTipousuario());
 
         if (nuevoUsuarioRegistrar.getNombres() != null
                 && nuevoUsuarioRegistrar.getApellidos() != null
@@ -156,27 +165,15 @@ public class ControlLogin implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             boolean datosOk = validarDatosObligatorios();
-            System.out.println("1 datosOk : " + datosOk);
             if (datosOk == true) {
-                System.out.println("2 datosOk : " + datosOk);
                 boolean usuarioOk = validarUsuarioYaRegistrado();
                 if (usuarioOk == true) {
-                    System.out.println("3 datosOk : " + datosOk);
                     boolean tipoUsuarioOk = validarTipoUsuarioNuevoRegistro();
                     if (tipoUsuarioOk == true) {
-                        System.out.println("4 datosOk : " + datosOk);
                         int k = 1;
                         BigInteger secuencia = new BigInteger(String.valueOf(k));
                         nuevoUsuarioRegistrar.setSecuencia(secuencia);
                         nuevoUsuarioRegistrar.setActivo(true);
-                        System.out.println(" Nombre: " + nuevoUsuarioRegistrar.getNombres());
-                        System.out.println(" Apellido: " + nuevoUsuarioRegistrar.getApellidos());
-                        System.out.println(" Contraseña: " + nuevoUsuarioRegistrar.getContrasena());
-                        System.out.println(" Correo Electronico: " + nuevoUsuarioRegistrar.getCorreoelectronico());
-                        System.out.println(" Numero Documento: " + nuevoUsuarioRegistrar.getNumerodocumento());
-                        System.out.println(" Tipo Usuario: " + nuevoUsuarioRegistrar.getTipousuario());
-                        System.out.println(" Secuencia: " + nuevoUsuarioRegistrar.getSecuencia());
-                        System.out.println(" Activo: " + nuevoUsuarioRegistrar.getActivo());
                         administrarLogin.crearNuevoUsuario(nuevoUsuarioRegistrar);
 
                         nuevoUsuarioRegistrar = new Usuario();
@@ -217,8 +214,6 @@ public class ControlLogin implements Serializable {
     public void loginUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
-            System.out.println("ControlLogin Correo: " + correo);
-            System.out.println("ControlLogin Contraseña:" + contrasena);
             if (correo != null && contrasena != null) {
                 context.execute("loginUsuario.hide()");
                 Usuario user = administrarLogin.obtenerUsuarioLogin(correo, contrasena);
@@ -226,11 +221,18 @@ public class ControlLogin implements Serializable {
                     context.execute("errorUsuarioNoExiste.show()");
                 } else {
                     usuarioLogin = user;
+                    infoUsuarioConectado = usuarioLogin.getNombres() + " "+ usuarioLogin.getApellidos();
                     contrasena = null;
                     correo = null;
+                    permisoIngresar = true;
                     FacesMessage msg = new FacesMessage("Información", "Ingreso exitoso");
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                     context.update("form:growl");
+                    context.update("form:infoUsuarioConectado");
+                    context.update("form:RECORDAR_PASS");
+                    context.update("form:INGRESAR");
+                    context.update("form:REGISTRAR");
+                    activarFuncionesUsuario();
                 }
             } else {
                 context.execute("errorDatosObligatorios.show()");
@@ -264,9 +266,9 @@ public class ControlLogin implements Serializable {
                 String pass = administrarLogin.recordarContrasenaUsuario(correo, numDocumento);
                 if (pass != null) {
                     contrasenaRecuperada = pass;
-                    context.execute("errorContrasenaRecuperada.show()");
+                    context.execute("contraRecuperada.show()");
                 } else {
-                    context.execute("errorContrasenaRecuperada.show()");
+                    context.execute("errorUsuarioNoExiste.show()");
                 }
             } else {
                 context.execute("errorDatosObligatorios.show()");
@@ -277,6 +279,75 @@ public class ControlLogin implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
+    }
+
+    /**
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
+     */
+    public void activarFuncionesUsuario() {
+
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = false;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = true;
+            permisoUsuario = false;
+        }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
+    }
+
+    /**
+     * Metodo encargado de cerrar la sesion del usuario actualmente conectado en
+     * el sistema
+     */
+    public void cerrarSesion() {
+        infoUsuarioConectado = "Información Usuario Conectado";
+        permisoReservar = true;
+        permisoPrestamo = true;
+        permisoDocPracticas = true;
+        permisoEstadisticas = true;
+        permisoGuias = true;
+        permisoUsuario = true;
+        permisoMateria = true;
+        permisoCerrarSesion = true;
+        permisoIngresar = false;
+        contrasenaRecuperada = null;
+        correo = null;
+        contrasena = null;
+        numDocumento = null;
+
+        nuevoUsuarioRegistrar = new Usuario();
+        usuarioLogin = null;
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
+        context.update("form:PanelTotal");
     }
 
     /**
@@ -335,6 +406,86 @@ public class ControlLogin implements Serializable {
 
     public void setContrasenaRecuperada(String contrasenaRecuperada) {
         this.contrasenaRecuperada = contrasenaRecuperada;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
 }

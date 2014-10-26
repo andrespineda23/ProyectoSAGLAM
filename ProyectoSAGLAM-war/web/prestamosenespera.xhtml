@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoReservar}"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoPrestamo}" />
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoDocPracticas}"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoGuias}"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoEstadisticas}"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoUsuario}"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoMateria}"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}" action="login"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlPrestamosEspera.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" disabled="#{controlPrestamosEspera.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center"  process="@this" disabled="#{controlPrestamosEspera.permisoIngresar}"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" disabled="#{controlPrestamosEspera.permisoIngresar}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Prestamos En Proceso de Espera</strong></legend>
+
+                                    <p:commandButton id="VALIDAR" value="Validar Prestamo" style="position: absolute; top: 45px; left: 700px; text-align: center" process="@this"/>
+                          
+                            
+                        </fieldset>
+                        
+
+                    </p:panel>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

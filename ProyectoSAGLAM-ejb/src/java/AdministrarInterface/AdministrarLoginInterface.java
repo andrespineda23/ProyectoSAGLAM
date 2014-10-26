@@ -6,6 +6,7 @@
 package AdministrarInterface;
 
 import Entidades.Usuario;
+import java.math.BigInteger;
 
 /**
  * Interface del AdministrarLogin. Esta interface contiene la informacion
@@ -55,5 +56,12 @@ public interface AdministrarLoginInterface {
      * @return Usuario que posee las credenciales ingreadas
      */
     public Usuario validarUsuarioRegistradoEnSistema(String correo, String documento);
+    
+    /**
+     * Metodo que permite buscar un usuario por medio de su secuencia de registro
+     * @param secuencia Secuencia del usuario
+     * @return  Usuario que corresponde a la secuencia dad
+     */
+     public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia);
 
 }
