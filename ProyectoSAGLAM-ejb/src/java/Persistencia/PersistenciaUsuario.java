@@ -27,58 +27,29 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
 
     @Override
     public void crearUsuario(Usuario usuario) {
-        System.out.println("PERSISTENCIA Nombre: " + usuario.getNombres());
-        System.out.println("PERSISTENCIA Apellido: " + usuario.getApellidos());
-        System.out.println("PERSISTENCIA Contraseña: " + usuario.getContrasena());
-        System.out.println("PERSISTENCIA Correo Electronico: " + usuario.getCorreoelectronico());
-        System.out.println("PERSISTENCIA Numero Documento: " + usuario.getNumerodocumento());
-        System.out.println("PERSISTENCIA Tipo Usuario: " + usuario.getTipousuario());
-        System.out.println("PERSISTENCIA Secuencia: " + usuario.getSecuencia());
-        System.out.println("PERSISTENCIA Activo: " + usuario.getActivo());
-        //em.clear();
-        //EntityTransaction tx = em.getTransaction();
         try {
-          //  tx.begin();
-
             em.persist(usuario);
-           // tx.commit();
         } catch (Exception e) {
             System.err.println("Error crearUsuario PersistenciaUsuario : " + e.toString());
-           // if (tx.isActive()) {
-             //   tx.rollback();
-           // }
+
         }
     }
 
     @Override
     public void editarUsuario(Usuario usuario) {
-        em.clear();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
             em.merge(usuario);
-            tx.commit();
         } catch (Exception e) {
             System.out.println("Error editarUsuario PersistenciaUsuario : " + e.toString());
-            if (tx.isActive()) {
-                tx.rollback();
-            }
         }
     }
 
     @Override
     public void borrarUsuario(Usuario usuario) {
-        em.clear();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
             em.remove(em.merge(usuario));
-            tx.commit();
         } catch (Exception e) {
             System.out.println("Error borrarUsuario PersistenciaUsuario : " + e.toString());
-            if (tx.isActive()) {
-                tx.rollback();
-            }
         }
     }
 
@@ -96,6 +67,7 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
         }
     }
 
+    @Override
     public List<Usuario> buscarUsuariosNOBloquedaos() {
         try {
             em.clear();
@@ -178,8 +150,6 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
     @Override
     public Usuario buscarUsuarioRegistradoEnSistema(String correo, String numDocumento) {
         try {
-            System.out.println("PersistenciaUsuario Correo " + correo);
-            System.out.println("PersistenciaUsuario numDocumento " + numDocumento);
             em.clear();
             Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.correoelectronico = :correo AND u.numerodocumento = :numDocumento");
             query.setParameter("correo", correo);
