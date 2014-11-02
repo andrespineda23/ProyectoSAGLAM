@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText style="position: absolute; top: 60px; left: 10px" value="Informacion Usuario Conectado"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" disabled="true" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" actionListener="#{controlLogin.dispararDialogoRecuperar()}" process="@this"/>
+                        <p:commandButton id="INGRESAR" disabled="true" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center" actionListener="#{controlLogin.dispararDialogoLogin()}" process="@this"/>
+                        <p:commandButton id="REGISTRAR" disabled="true" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" actionListener="#{controlLogin.dispararDialogoRegistro()}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Usuario</strong></legend>
+
+                            <p:commandButton id="CAMBIAR_CONTRASENA" disabled="false" value="Cambiar Contraseña" style="position: absolute; top: 65px; left: 300px; text-align: center" actionListener="#{controlUsuario.dispararDialogoCambiarContrasena()}" process="@this"/>
+                            <p:commandButton id="BLOQUEARUSUARIO" disabled="false" value="Bloquear Usuario" style="position: absolute; top: 195px; left: 310px; text-align: center" action="bloquearusuario" process="@this"/>
+
+                        </fieldset>
+
+
+                    </p:panel>
+
+                    <p:dialog header="Cambiar Contraseña" draggable="false" resizable="false"
+                              closable="false" id="DialogoCambiarContrasena" widgetVar="DialogoCambiarContrasena" showEffect="fade" hideEffect="fade"
+                              width="435" height="200" modal="true" style="width: 435px; font-size: 12px;">
+
+                        <center><strong><h:outputText value="Cambiar Contraseña del Usuario Actual" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <strong><h:outputText value="Contraseña Antigua : " style="position: absolute; left: 50px; top: 82px;"/></strong>
+                        <p:inputText id="cambiarContrasenaNueva" value="#{controlUsuario.contrasenaAntigua}"  style="position: absolute; left: 200px; top: 75px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Contraseña Nueva : " style="position: absolute; left: 50px; top: 120px;"/></strong>
+                        <p:inputText id="cambiarContrasenaAntigua" value="#{controlUsuario.contrasenaAntigua}"  style="position: absolute; left: 200px; top: 115px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 158px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 158px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="DialogoCambiarContrasena.hide()"/>
+
+                    </p:dialog>
+
+
+
+                    <p:dialog id="errorDatosObligatorios"  header="ATENCION !!!" widgetVar="errorDatosObligatorios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Todos los campos son obligatorios" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="contrasenaErronea"  header="ATENCION !!!" widgetVar="contrasenaErronea"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="No coinciden las contraseñas" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
