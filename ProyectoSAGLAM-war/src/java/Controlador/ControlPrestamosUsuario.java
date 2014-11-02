@@ -11,13 +11,9 @@ import Entidades.Usuario;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -25,7 +21,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlPrestamosEspera implements Serializable {
+public class ControlPrestamosUsuario implements Serializable {
 
     //Parametros
     //Inyeccion del EJB Adminitrador del controlador
@@ -39,60 +35,13 @@ public class ControlPrestamosEspera implements Serializable {
     private boolean permisoIngresar;
     private String infoUsuarioConectado;
 
-    //
-    private List<PrestamoUsuario> listaPrestamos;
-    private List<PrestamoUsuario> filtrarListaPrestamos;
+    private List<PrestamoUsuario> listaPrestamosUsuario;
+    private List<PrestamoUsuario> filtrarListaPrestamosUsuario;
     private PrestamoUsuario prestamoSeleccionado;
-    //
-    private int indice;
 
-    public ControlPrestamosEspera() {
-        listaPrestamos = null;
-        prestamoSeleccionado = null;
-    }
-
-    public void obtenerPosicionTablaPrestamo() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-        String type = map.get("t"); // type attribute of node
-        indice = Integer.parseInt(type);
-    }
-
-    public void validarPrestamoEnEspera() {
-        if (prestamoSeleccionado != null) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:validarPrestamo");
-            context.execute("validarPrestamo.show()");
-        }
-    }
-
-    public void aceptarValidacionPrestamo() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        try {
-            prestamoSeleccionado.getPrestamo().setEstadosolicitud("ACEPTADO");
-            administrarPrestamo.modificarEstadoPrestamo(prestamoSeleccionado);
-            prestamoSeleccionado = null;
-            indice = -1;
-            listaPrestamos = null;
-            getListaPrestamos();
-            context.update("form:datosPrestamosEspera");
-
-            FacesMessage msg = new FacesMessage("Información", "El prestamo validado exitosamente");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-        } catch (Exception e) {
-            System.out.println("Error aceptarValidacionPrestamo ControlPrestamosEspera : " + e.toString());
-            FacesMessage msg = new FacesMessage("Información", "Ocurrio un error en el proceso, intente nuevamente");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-        }
-
-    }
-
-    public void cancelarValidacionPrestamo() {
-        prestamoSeleccionado = null;
-        indice = -1;
-        RequestContext.getCurrentInstance().update("form:datosPrestamosEspera");
+    public ControlPrestamosUsuario() {
+        listaPrestamosUsuario = null;
+        prestamoSeleccionado = new PrestamoUsuario();
     }
 
     /**
@@ -237,23 +186,23 @@ public class ControlPrestamosEspera implements Serializable {
         this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
-    public List<PrestamoUsuario> getListaPrestamos() {
-        if (listaPrestamos == null) {
-            listaPrestamos = administrarPrestamo.obtenerPrestamosEnProcesoDeEspera();
+    public List<PrestamoUsuario> getListaPrestamosUsuario() {
+        if (usuarioLogin.getSecuencia() != null) {
+            listaPrestamosUsuario = administrarPrestamo.obtenerPrestamosDeUnUsuario(usuarioLogin.getSecuencia());
         }
-        return listaPrestamos;
+        return listaPrestamosUsuario;
     }
 
-    public void setListaPrestamos(List<PrestamoUsuario> listaPrestamos) {
-        this.listaPrestamos = listaPrestamos;
+    public void setListaPrestamosUsuario(List<PrestamoUsuario> listaPrestamosUsuario) {
+        this.listaPrestamosUsuario = listaPrestamosUsuario;
     }
 
-    public List<PrestamoUsuario> getFiltrarListaPrestamos() {
-        return filtrarListaPrestamos;
+    public List<PrestamoUsuario> getFiltrarListaPrestamosUsuario() {
+        return filtrarListaPrestamosUsuario;
     }
 
-    public void setFiltrarListaPrestamos(List<PrestamoUsuario> filtrarListaPrestamos) {
-        this.filtrarListaPrestamos = filtrarListaPrestamos;
+    public void setFiltrarListaPrestamosUsuario(List<PrestamoUsuario> filtrarListaPrestamosUsuario) {
+        this.filtrarListaPrestamosUsuario = filtrarListaPrestamosUsuario;
     }
 
     public PrestamoUsuario getPrestamoSeleccionado() {

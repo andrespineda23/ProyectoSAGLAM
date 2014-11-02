@@ -39,7 +39,7 @@ public class ControlLogin implements Serializable {
     //Si se presenta un proceso de recuperar contraseña, esta variable se encargara de almacenarla
     private String contrasenaRecuperada;
     //
-    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion;
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
     private String infoUsuarioConectado;
 
@@ -53,6 +53,7 @@ public class ControlLogin implements Serializable {
         permisoReservar = true;
         permisoPrestamo = true;
         permisoDocPracticas = true;
+        permisoLaboratorio = true;
         permisoEstadisticas = true;
         permisoGuias = true;
         permisoUsuario = true;
@@ -221,7 +222,7 @@ public class ControlLogin implements Serializable {
                     context.execute("errorUsuarioNoExiste.show()");
                 } else {
                     usuarioLogin = user;
-                    infoUsuarioConectado = usuarioLogin.getNombres() + " "+ usuarioLogin.getApellidos();
+                    infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
                     contrasena = null;
                     correo = null;
                     permisoIngresar = true;
@@ -296,6 +297,7 @@ public class ControlLogin implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
+            permisoLaboratorio = true;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
@@ -306,6 +308,7 @@ public class ControlLogin implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
+            permisoLaboratorio = true;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
@@ -316,6 +319,7 @@ public class ControlLogin implements Serializable {
             permisoPrestamo = false;
             permisoReservar = true;
             permisoUsuario = false;
+            permisoLaboratorio = false;
         }
         permisoIngresar = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -337,6 +341,7 @@ public class ControlLogin implements Serializable {
         permisoMateria = true;
         permisoCerrarSesion = true;
         permisoIngresar = false;
+        permisoLaboratorio = true;
         contrasenaRecuperada = null;
         correo = null;
         contrasena = null;
@@ -486,6 +491,14 @@ public class ControlLogin implements Serializable {
 
     public void setInfoUsuarioConectado(String infoUsuarioConectado) {
         this.infoUsuarioConectado = infoUsuarioConectado;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
     }
 
 }

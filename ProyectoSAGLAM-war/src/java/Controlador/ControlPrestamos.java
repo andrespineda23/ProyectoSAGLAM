@@ -29,7 +29,7 @@ public class ControlPrestamos implements Serializable {
     AdministrarLoginInterface administrarLogin;
 
     private Usuario usuarioLogin;
-    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion;
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
     private String infoUsuarioConectado;
 
@@ -64,6 +64,7 @@ public class ControlPrestamos implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
+            permisoLaboratorio = true;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
@@ -74,6 +75,7 @@ public class ControlPrestamos implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
+            permisoLaboratorio = true;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
@@ -84,6 +86,7 @@ public class ControlPrestamos implements Serializable {
             permisoPrestamo = false;
             permisoReservar = true;
             permisoUsuario = false;
+            permisoLaboratorio = false;
         }
     }
 
@@ -174,6 +177,14 @@ public class ControlPrestamos implements Serializable {
 
     public void setInfoUsuarioConectado(String infoUsuarioConectado) {
         this.infoUsuarioConectado = infoUsuarioConectado;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
     }
 
 }

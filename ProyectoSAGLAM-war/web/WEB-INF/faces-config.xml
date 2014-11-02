@@ -41,5 +41,23 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/prestamos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prestamosusuario</from-outcome>
+            <to-view-id>/prestamosusuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamosusuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
 </faces-config>

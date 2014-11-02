@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">         
+
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoReservar}"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoPrestamo}" />
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoDocPracticas}"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoGuias}"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoEstadisticas}"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoUsuario}"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoMateria}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoLaboratorio}" process="@this"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}" action="login"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlPrestamosUsuario.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" disabled="#{controlPrestamosUsuario.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center"  process="@this" disabled="#{controlPrestamosUsuario.permisoIngresar}"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" disabled="#{controlPrestamosUsuario.permisoIngresar}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Prestamos En Proceso de Espera</strong></legend>
+
+                            <p:dataTable id="datosPrestamosEspera" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 12px; border: 1px;width: 820px;"                           
+                                         value="#{controlPrestamosUsuario.listaPrestamosUsuario}" scrollable="true" scrollHeight="180" scrollWidth="820"
+                                         filteredValue="#{controlPrestamosUsuario.filtrarListaPrestamosUsuario}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25">
+
+                                <p:column  headerText="Fecha" sortBy="#{info.prestamo.fecha}" filterBy="#{info.prestamo.fecha}" filterMatchMode="contains" width="145" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.fecha}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.fecha}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"   onclick="select();"
+                                                         > 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Hora Inicial" sortBy="#{info.prestamo.horainicial}" filterBy="#{info.prestamo.horainicial}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.horainicial}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.horainicial}" readonly="true" style="border-radius: 0px; width: 99.5%;"  onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Hora Final" sortBy="#{info.prestamo.horainicial}" filterBy="#{info.prestamo.horainicial}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.horainicial}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.horainicial}" readonly="true" style="border-radius: 0px; width: 99.5%;"  onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Usuario" sortBy="#{info.usuario.correoelectronico}" filterBy="#{info.usuario.correoelectronico}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.usuario.correoelectronico}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.usuario.correoelectronico}" readonly="true" style="border-radius: 0px; width: 99.5%;"  onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Guia de Trabajo" sortBy="#{info.prestamo.guiatrabajo.nombre}" filterBy="#{info.prestamo.guiatrabajo.nombre}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.guiatrabajo.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.guiatrabajo.nombre}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Tipo Actividad" sortBy="#{info.prestamo.tipoactividad}" filterBy="#{info.prestamo.tipoactividad}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.tipoactividad}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.tipoactividad}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+                            
+                            <p:commandButton id="BUSCAR" value="Buscar Usuario" style="position: absolute; top: 270px; left: 700px; text-align: center" process="@this"/>
+                        </fieldset>
+
+                    </p:panel>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
