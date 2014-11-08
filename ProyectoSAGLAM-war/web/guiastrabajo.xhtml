@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="AGREGAR" value="Agregar" style="position: absolute; top: 45px; left: 690px; text-align: center" actionListener="#{controlGuiasTrabajo.dispararDialogoAgregar()}" process="@this"/>
+                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 775px; text-align: center" actionListener="#{controlGuiasTrabajo.borrarGuiaTrabajo()}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
+                            <p:dataTable id="datosBloquearUsuario" var="info" rowKey="#{info.secuencia}"  
+                                         rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
+                                         value="#{controlGuiasTrabajo.listGuiaTrabajo}" 
+                                         scrollable="true"
+                                         scrollHeight="#{controlGuiasTrabajo.tamano}"
+                                         scrollWidth="830"
+                                         filteredValue="#{controlGuiasTrabajo.filtrarGuiaTrabajo}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="false" 
+                                         selection="#{controlGuiasTrabajo.guiaTrabajoSeleccionada}"
+                                         selectionMode="single"
+                                         >
+                                <p:ajax event="filter" listener="#{controlGuiasTrabajo.eventoFiltrar()}"/>
+
+                                <p:column headerText="Código"  sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.codigo}"  id="editarNombres" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlGuiasTrabajo.cambiarIndice(indice, 0)}" process="@this"/> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                </p:column>
+
+                                <p:column headerText="Apellidos"  sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="nombre" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.nombre}"  id="editarApellidos" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlGuiasTrabajo.cambiarIndice(indice, 1)}" process="@this"/> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+                    </p:panel>
+
+                    <p:dialog header="Cambiar Contraseña" draggable="false" resizable="false"
+                              closable="false" id="RegistroNuevaGuiaTrabajo" widgetVar="RegistroNuevaGuiaTrabajo" showEffect="fade" hideEffect="fade"
+                              width="435" height="200" modal="true" style="width: 435px; font-size: 12px;">
+
+                        <center><strong><h:outputText value="Cambiar Contraseña del Usuario Actual" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <strong><h:outputText value="Contraseña Antigua : " style="position: absolute; left: 50px; top: 82px;"/></strong>
+                        <p:inputText id="cambiarContrasenaNueva" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.codigo}"  style="position: absolute; left: 200px; top: 75px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Contraseña Nueva : " style="position: absolute; left: 50px; top: 120px;"/></strong>
+                        <p:inputText id="cambiarContrasenaAntigua" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.nombre}"  style="position: absolute; left: 200px; top: 115px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 158px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 158px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="RegistroNuevaGuiaTrabajo.hide()"/>
+
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
