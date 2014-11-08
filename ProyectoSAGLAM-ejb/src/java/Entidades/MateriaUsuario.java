@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,6 +44,9 @@ public class MateriaUsuario implements Serializable {
     @JoinColumn(name = "materia", referencedColumnName = "secuencia")
     @ManyToOne
     private Materia materia;
+    @Size(max = 5)
+    @Column(name = "grupo")
+    private String grupo;
 
     public MateriaUsuario() {
     }
@@ -98,6 +102,14 @@ public class MateriaUsuario implements Serializable {
     @Override
     public String toString() {
         return "Entidades.MateriaUsuario[ secuencia=" + secuencia + " ]";
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
     }
     
 }

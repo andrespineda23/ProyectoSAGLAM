@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">         
+
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoReservar}"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoPrestamo}" />
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoDocPracticas}"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoGuias}"/>
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoEstadisticas}"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoUsuario}"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoMateria}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="true" process="@this"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlAreaTrabajo.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}" action="login"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlAreaTrabajo.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" disabled="#{controlAreaTrabajo.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center"  process="@this" disabled="#{controlAreaTrabajo.permisoIngresar}"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" disabled="#{controlAreaTrabajo.permisoIngresar}" process="@this"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Areas de Trabajo</strong></legend>
+
+                            <p:commandButton id="ADICIONAR" value="Adicionar" style="position: absolute; top: 30px; left: 700px; text-align: center" process="@this" />
+
+                            <p:remoteCommand name="obtenerPosicionArea" actionListener="#{controlAreaTrabajo.obtenerPosicionArea()}"/>
+
+                            <p:dataTable id="datosAreaTrabajo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 12px; border: 1px;width: 820px"                           
+                                         value="#{controlAreaTrabajo.listaAreasDeTrabajo}" scrollable="true" scrollHeight="180" scrollWidth="820"
+                                         filteredValue="#{controlAreaTrabajo.filtrarListaAreasDeTrabajo}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25">
+
+
+                                <p:column headerText="Usuario" sortBy="#{info.nombrearea}" filterBy="#{info.nombrearea}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.nombrearea}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.nombrearea}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Guia de Trabajo" sortBy="#{info.cantmaxpersonas}" filterBy="#{info.cantmaxpersonas}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.cantmaxpersonas}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.cantmaxpersonas}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Tipo Actividad" sortBy="#{info.strEstado}" filterBy="#{info.strEstado}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.strEstado}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.strEstado}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+
+                    </p:panel>
+
+                    <p:dialog header="Registro Nueva Area Trabajo" draggable="false" resizable="false"
+                              closable="false" id="RegistroNuevaAreaTrabajo" widgetVar="RegistroNuevaAreaTrabajo" showEffect="fade" hideEffect="fade"
+                              width="435" height="215" modal="true" style="width: 435px; font-size: 12px;">
+
+                        <center><strong><h:outputText value="Ingrese la informacion del nuevo usuario" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <strong><h:outputText value="Nombre Sala: " style="position: absolute; left: 50px; top: 75px;"/></strong>
+                        <p:inputText id="nuevoNombreSala" value="#{controlAreaTrabajo.nuevaAreaTrabajo.nombrearea}"  style="position: absolute; left: 200px; top: 70px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Cant. Max Personas: " style="position: absolute; left: 50px; top: 105px;"/></strong>
+                        <p:inputText id="nuevoMaxPersonasSala" value="#{controlAreaTrabajo.nuevaAreaTrabajo.cantmaxpersonas}"  style="position: absolute; left: 200px; top: 100px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <strong><h:outputText value="Estado Uso: " style="position: absolute; left: 50px; top: 135px;"/></strong>
+                        <p:selectOneMenu id="nuevoEstadoSala" value="#{controlAreaTrabajo.nuevaAreaTrabajo.estadouso}" style="position: absolute; left: 200px; top: 130px">
+                            <f:selectItem itemLabel="ACTIVA" itemValue="true" />
+                            <f:selectItem itemLabel="INACTIVA" itemValue="false" />
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 175px" actionListener="#{controlAreaTrabajo.agregarNuevaAreaTrabajo()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 175px" actionListener="#{controlAreaTrabajo.cancelarNuevaAreaTrabajo()}" process="@this" onclick="RegistroNuevaAreaTrabajo.hide()"/>
+
+                    </p:dialog>
+                    
+                    <p:dialog id="errorDatosNull"  header="ATENCION !!!" widgetVar="errorDatosNull"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Todos los campos son obligatorios" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

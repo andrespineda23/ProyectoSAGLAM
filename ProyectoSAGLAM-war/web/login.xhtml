@@ -21,8 +21,8 @@
                         <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoGuias}"  process="@this"/>
                         <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoEstadisticas}"  process="@this"/>
                         <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoUsuario}"  process="@this"/>
-                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoMateria}"  process="@this"/>
-                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoLaboratorio}" process="@this"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this"/>
 
                     </p:panel>

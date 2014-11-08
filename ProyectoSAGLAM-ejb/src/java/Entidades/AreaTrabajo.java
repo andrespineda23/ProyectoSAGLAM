@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -17,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "AreaTrabajo.findByEstadouso", query = "SELECT a FROM AreaTrabajo a WHERE a.estadouso = :estadouso"),
     @NamedQuery(name = "AreaTrabajo.findByNombrearea", query = "SELECT a FROM AreaTrabajo a WHERE a.nombrearea = :nombrearea")})
 public class AreaTrabajo implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -63,6 +64,8 @@ public class AreaTrabajo implements Serializable {
     private String nombrearea;
     @OneToMany(mappedBy = "areatrabajo")
     private Collection<Prestamo> prestamoCollection;
+    @Transient
+    private String strEstado;
 
     public AreaTrabajo() {
     }
@@ -111,6 +114,20 @@ public class AreaTrabajo implements Serializable {
         this.estadouso = estadouso;
     }
 
+    public String getStrEstado() {
+        getEstadouso();
+        if (estadouso == false) {
+            strEstado = "INACTIVA";
+        } else {
+            strEstado = "ACTIVA";
+        }
+        return strEstado;
+    }
+
+    public void setStrEstado(String strEstado) {
+        this.strEstado = strEstado;
+    }
+
     public String getNombrearea() {
         return nombrearea;
     }
@@ -152,5 +169,5 @@ public class AreaTrabajo implements Serializable {
     public String toString() {
         return "Entidades.AreaTrabajo[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
