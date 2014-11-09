@@ -7,6 +7,7 @@ package PersistenciaInterface;
 
 import Entidades.PrestamoUsuario;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,5 +25,7 @@ public interface PersistenciaPrestamoUsuarioInterface {
     public List<PrestamoUsuario> buscarPrestamosEnEspera();
 
     public List<PrestamoUsuario> buscarPrestamosDeUnUsuario(BigInteger secuencia);
+
+    public List<PrestamoUsuario> buscarPrestamosAceptados(Date fechaSolicitada);
 
 }

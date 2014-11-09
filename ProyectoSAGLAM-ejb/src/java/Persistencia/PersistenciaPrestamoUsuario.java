@@ -66,6 +66,21 @@ public class PersistenciaPrestamoUsuario implements PersistenciaPrestamoUsuarioI
             return null;
         }
     }
+    
+    @Override
+    public List<PrestamoUsuario> buscarPrestamosAceptados(Date fechaSolicitada) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT p FROM PrestamoUsuario p WHERE p.prestamo.estadosolicitud='ACEPTADO' AND p.prestamo.fecha=:fechaSolicitada ORDER BY p.prestamo.horainicial DESC");
+            query.setParameter("fechaSolicitada", fechaSolicitada);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<PrestamoUsuario> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarPrestamosAceptados PersistenciaPrestamoUsuario : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<PrestamoUsuario> buscarPrestamosDeUnUsuario(BigInteger secuencia) {
