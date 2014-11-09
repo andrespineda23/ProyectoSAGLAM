@@ -89,7 +89,8 @@
                             <p:ajax event="change" update="@this" process="@this"/>
                         </p:inputText>
 
-
+                        <p:fileUpload  mode="simple"/>
+ 
                         <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 158px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
                         <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 158px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="RegistroNuevaGuiaTrabajo.hide()"/>
 

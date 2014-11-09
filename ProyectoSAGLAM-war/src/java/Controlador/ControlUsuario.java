@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -32,8 +33,24 @@ public class ControlUsuario implements Serializable {
     private Usuario usuarioRecibido;
     private boolean camposVacios;
     private String paginaAnterior;
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
+    private boolean permisoIngresar;
+    private boolean permisoBloquearUsuario;
+    private String infoUsuarioConectado;
+    private UploadedFile file;
 
     public ControlUsuario() {
+        infoUsuarioConectado = "Información Usuario Conectado";
+        permisoIngresar = false;
+        permisoReservar = true;
+        permisoPrestamo = true;
+        permisoDocPracticas = true;
+        permisoLaboratorio = true;
+        permisoEstadisticas = true;
+        permisoGuias = true;
+        permisoUsuario = true;
+        permisoMateria = true;
+        permisoCerrarSesion = true;
 
     }
 
@@ -44,6 +61,7 @@ public class ControlUsuario implements Serializable {
             usuarioRecibido = administrarUsuario.consultarUsuarioPorSecuencia(secEmpleado);
             System.err.println("ControlUsuario usuarioRecibidoERROR usuario : " + usuarioRecibido.getCorreoelectronico());
             System.err.println("ControlUsuario usuarioRecibidoERROR contrasena : " + usuarioRecibido.getContrasena());
+            activarFuncionesUsuario();
         }
     }
 
@@ -79,6 +97,8 @@ public class ControlUsuario implements Serializable {
                 System.out.println("Antes de cambiar Contraseña:" + usuarioRecibido.getContrasena());
                 usuarioRecibido.setContrasena(contrasenaNueva);
                 administrarUsuario.editarUsuario(usuarioRecibido);
+                context.reset("form:DialogoCambiarContrasena");
+                context.execute("DialogoCambiarContrasena.hide()");
             } else {
                 context.update("form:contrasenaErronea");
                 context.execute("contrasenaErronea.show()");
@@ -89,7 +109,7 @@ public class ControlUsuario implements Serializable {
         }
     }
 
-    public void cancelarNuevoRegistroUsuario() {
+    public void cancelarCambioContrasena() {
         RequestContext context = RequestContext.getCurrentInstance();
         contrasenaAntigua = null;
         contrasenaAntigua = null;
@@ -103,6 +123,54 @@ public class ControlUsuario implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:DialogoCambiarContrasena");
         context.execute("DialogoCambiarContrasena.show()");
+    }
+
+    /**
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
+     */
+    public void activarFuncionesUsuario() {
+
+        if (usuarioRecibido.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = true;
+            permisoLaboratorio = true;
+            permisoBloquearUsuario = true;
+        }
+        if (usuarioRecibido.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = true;
+            permisoLaboratorio = true;
+            permisoBloquearUsuario = true;
+
+        }
+        if (usuarioRecibido.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = true;
+            permisoUsuario = true;
+            permisoLaboratorio = false;
+            permisoBloquearUsuario = false;
+        }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     public String getContrasenaNueva() {
@@ -127,6 +195,102 @@ public class ControlUsuario implements Serializable {
 
     public void setUsuarioRecibido(Usuario usuarioRecibido) {
         this.usuarioRecibido = usuarioRecibido;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
+    }
+
+    public boolean isPermisoBloquearUsuario() {
+        return permisoBloquearUsuario;
+    }
+
+    public void setPermisoBloquearUsuario(boolean permisoBloquearUsuario) {
+        this.permisoBloquearUsuario = permisoBloquearUsuario;
     }
 
 }
