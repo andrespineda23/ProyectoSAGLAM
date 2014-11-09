@@ -5,6 +5,7 @@
  */
 package AdministrarInterface;
 
+import Entidades.MateriaUsuario;
 import Entidades.Prestamo;
 import Entidades.PrestamoUsuario;
 import Entidades.Usuario;
@@ -24,4 +25,6 @@ public interface AdministrarPrestamosInterface {
     public void modificarEstadoPrestamo(PrestamoUsuario prestamo);
 
     public List<PrestamoUsuario> obtenerPrestamosDeUnUsuario(BigInteger secuencia);
+
+    public List<MateriaUsuario> buscarMateriasUsuarios();
 }

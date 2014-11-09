@@ -6,6 +6,8 @@
 package AdministrarInterface;
 
 import Entidades.ResultadosActividades;
+import Entidades.Usuario;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -21,4 +23,6 @@ public interface AdministrarResultadosActividadesInterface {
     public void eliminarResultadosActividades(ResultadosActividades resultadosActividades);
 
     public List<ResultadosActividades> consultarResultadosActividades();
+
+    public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia);
 }

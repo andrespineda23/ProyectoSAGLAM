@@ -6,6 +6,7 @@
 package PersistenciaInterface;
 
 import Entidades.MateriaUsuario;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,7 @@ import Entidades.MateriaUsuario;
 public interface PersistenciaMateriaUsuarioInterface {
 
     public void crearMateriaUsuario(MateriaUsuario materiaUsuario);
+
+    public List<MateriaUsuario> buscarMateriasUsuarios();
 
 }

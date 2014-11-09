@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -86,6 +87,8 @@ public class Usuario implements Serializable {
     private Collection<MateriaUsuario> materiaUsuarioCollection;
     @OneToMany(mappedBy = "usuario")
     private Collection<ResultadosActividades> resultadosActividadesCollection;
+    @Transient
+    private String nombreCompleto;
 
     public Usuario() {
     }
@@ -151,6 +154,17 @@ public class Usuario implements Serializable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public String getNombreCompleto() {
+        if (nombres != null && apellidos != null) {
+            nombreCompleto = nombres + " " + apellidos;
+        }
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public boolean getActivo() {

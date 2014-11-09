@@ -7,10 +7,12 @@ package Persistencia;
 
 import Entidades.MateriaUsuario;
 import PersistenciaInterface.PersistenciaMateriaUsuarioInterface;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,6 +31,19 @@ public class PersistenciaMateriaUsuario implements PersistenciaMateriaUsuarioInt
         } catch (Exception e) {
             System.err.println("Error crearMateriaUsuario PersistenciaMateriaUsuario : " + e.toString());
 
+        }
+    }
+
+    @Override
+    public List<MateriaUsuario> buscarMateriasUsuarios() {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT a FROM MateriaUsuario a ORDER BY a.secuencia DESC");
+            List<MateriaUsuario> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarMateriasUsuarios null;PersistenciaMateriaUsuario : " + e.toString());
+            return null;
         }
     }
 }

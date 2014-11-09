@@ -6,9 +6,11 @@
 package Administrar;
 
 import AdministrarInterface.AdministrarPrestamosInterface;
+import Entidades.MateriaUsuario;
 import Entidades.Prestamo;
 import Entidades.PrestamoUsuario;
 import Entidades.Usuario;
+import PersistenciaInterface.PersistenciaMateriaUsuarioInterface;
 import PersistenciaInterface.PersistenciaPrestamoUsuarioInterface;
 import PersistenciaInterface.PersistenciaUsuarioInterface;
 import java.math.BigInteger;
@@ -27,7 +29,9 @@ public class AdministrarPrestamos implements AdministrarPrestamosInterface {
     PersistenciaUsuarioInterface persistenciaUsuario;
     @EJB
     PersistenciaPrestamoUsuarioInterface persistenciaPrestamoUsuario;
- 
+    @EJB
+    PersistenciaMateriaUsuarioInterface persistenciaMateriaUsuario;
+
     //@Override
     public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia) {
         try {
@@ -66,6 +70,17 @@ public class AdministrarPrestamos implements AdministrarPrestamosInterface {
             return lista;
         } catch (Exception e) {
             System.out.println("Error obtenerPrestamosDeUnUsuario AdministrarPrestamos : " + e.toString());
+            return null;
+        }
+    }
+
+    //@Override
+    public List<MateriaUsuario> buscarMateriasUsuarios() {
+        try {
+            List<MateriaUsuario> lista = persistenciaMateriaUsuario.buscarMateriasUsuarios();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarMateriasUsuarios AdministrarPrestamos : " + e.toString());
             return null;
         }
     }
