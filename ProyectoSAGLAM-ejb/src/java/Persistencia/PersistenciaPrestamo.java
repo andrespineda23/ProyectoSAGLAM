@@ -50,4 +50,17 @@ public class PersistenciaPrestamo implements PersistenciaPrestamoInterface {
             System.out.println("Error borrarPrestamo PersistenciaPrestamo : " + e.toString());
         }
     }
+
+    @Override
+    public Prestamo obtenerUltimoPrestamoRegistrado() {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT p FROM Prestamo p WHERE p.secuencia=(SELECT MAX(r.secuencia) FROM Prestamo r)");
+            Prestamo prestamo = (Prestamo) query.getSingleResult();
+            return prestamo;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoPrestamoRegistrado PersistenciaPrestamo : " + e.toString());
+            return null;
+        }
+    }
 }

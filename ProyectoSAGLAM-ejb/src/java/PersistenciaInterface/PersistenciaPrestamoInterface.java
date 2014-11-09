@@ -20,4 +20,5 @@ public interface PersistenciaPrestamoInterface {
 
     public void borrarPrestamo(Prestamo prestamo);
 
+    public Prestamo obtenerUltimoPrestamoRegistrado();
 }

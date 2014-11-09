@@ -16,7 +16,7 @@
 
                     <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoReservar}"  process="@this"/>
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoReservar}"  process="@this" action="reservaareatrabajo" actionListener="#{controlReservaAreaTrabajo.recibiriUsuarioConectado(controlPrestamosEspera.usuarioLogin.secuencia)}" />
                         <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoPrestamo}" actionListener="#{controlPrestamos.recibiriUsuarioConectado(controlPrestamosEspera.usuarioLogin.secuencia)}" action="prestamos" process="@this"/>
                         <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoDocPracticas}"  process="@this" actionListener="#{controlResultadosActividades.recibiriUsuarioConectado(controlPrestamosEspera.usuarioLogin.secuencia)}" action="resultadosactividades"/>
                         <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoGuias}"  process="@this" />
@@ -24,7 +24,7 @@
                         <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoUsuario}"  process="@this"/>
                         <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlPrestamosEspera.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlPrestamosEspera.usuarioLogin.secuencia)}"/>
-                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlPrestamosEspera.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this" action="login"/>
 
                     </p:panel>
 

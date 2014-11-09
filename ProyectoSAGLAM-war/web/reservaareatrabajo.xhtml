@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml" >
+            <ui:define name="body">         
+
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
+
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"  process="@this" action="reservaareatrabajo" actionListener="#{controlReservaAreaTrabajo.recibiriUsuarioConectado(controlReservaAreaTrabajo.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoPrestamo}" actionListener="#{controlPrestamos.recibiriUsuarioConectado(controlReservaAreaTrabajo.usuarioLogin.secuencia)}" action="prestamos" process="@this"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoDocPracticas}"  process="@this" actionListener="#{controlResultadosActividades.recibiriUsuarioConectado(controlReservaAreaTrabajo.usuarioLogin.secuencia)}" action="resultadosactividades"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoGuias}"  process="@this" />
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoEstadisticas}"  process="@this"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoUsuario}"  process="@this"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlReservaAreaTrabajo.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlReservaAreaTrabajo.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}" action="login"  process="@this"/>
+
+                    </p:panel>
+
+                    <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
+
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlReservaAreaTrabajo.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center"  process="@this" disabled="#{controlReservaAreaTrabajo.permisoIngresar}"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" disabled="#{controlReservaAreaTrabajo.permisoIngresar}" process="@this"/>
+
+
+
+                        <h:outputText value="Fecha Consulta" style="position: absolute; left: 40px; top: 110px"/>
+                        <p:calendar id="fechaSolicitada" value="#{controlReservaAreaTrabajo.fechaSeleccionada}" pattern="dd/MM/yyyy" style="position: absolute; left: 170px; top: 105px"/>
+                        <p:commandButton value="Consultar" style="position: absolute; left: 400px; top: 100px;" actionListener="#{controlReservaAreaTrabajo.buscarPrestamosSolicitados()}" process="@this"/>
+
+                        <p:commandButton id="SOLICITAR_RESERVA" value="Solicitar Reserva" style="position: absolute; top: 100px; left: 700px; text-align: center" process="@this" actionListener="#{controlReservaAreaTrabajo.dispararDialogoRegistro()}"/>
+
+
+
+                        <fieldset style="position: absolute; left: 10px; top: 140px;width: 825px; height: 250px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>Solicitud de Prestamos de Area de Trabajo</strong></legend>
+
+                            <p:remoteCommand name="obtenerPosicionTablaPrestamo" actionListener="#{controlReservaAreaTrabajo.obtenerPosicionTablaPrestamo()}"/>
+
+                            <p:dataTable id="datosPrestamos" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 12px; border: 1px;width: 820px"                           
+                                         value="#{controlReservaAreaTrabajo.listaPrestamos}" scrollable="true" scrollHeight="180" scrollWidth="820"
+                                         filteredValue="#{controlReservaAreaTrabajo.filtrarListaPrestamos}" emptyMessage="Horarios de los prestamos de areas de trabajo aceptadas"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25">
+
+                                <p:column  headerText="Fecha" sortBy="#{info.prestamo.fecha}" filterBy="#{info.prestamo.fecha}" filterMatchMode="contains" width="145" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.fecha}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.fecha}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"   
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Hora Inicial" sortBy="#{info.prestamo.horainicial}" filterBy="#{info.prestamo.horainicial}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.horainicial}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.horainicial}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Hora Final" sortBy="#{info.prestamo.horainicial}" filterBy="#{info.prestamo.horainicial}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.horainicial}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.horainicial}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Sala de Trabajo" sortBy="#{info.prestamo.areatrabajo.nombrearea}" filterBy="#{info.prestamo.areatrabajo.nombrearea}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.areatrabajo.nombrearea}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.areatrabajo.nombrearea}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Estado Reserva" sortBy="#{info.prestamo.estadosolicitud}" filterBy="#{info.prestamo.estadosolicitud}" filterMatchMode="contains" width="133" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.prestamo.estadosolicitud}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.prestamo.estadosolicitud}" readonly="true" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"  
+                                                         onselect="obtenerPosicionTablaPrestamo([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+
+                    </p:panel>
+
+
+                    <p:dialog header="Registro Nueva Reserva" draggable="false" resizable="false"
+                              closable="false" id="NuevaSolicitudPrestamo" widgetVar="NuevaSolicitudPrestamo" showEffect="fade" hideEffect="fade"
+                              width="435" height="320" modal="true" style="width: 435px; font-size: 12px;">
+
+                        <center><strong><h:outputText value="Ingrese la información de la reserva" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <strong><h:outputText value="Fecha: " style="position: absolute; left: 50px; top: 75px;"/></strong>
+                        <p:calendar id="nuevaFecha" value="#{controlReservaAreaTrabajo.prestamoReserva.fecha}" pattern="dd/MM/yyyy"  style="position: absolute; left: 200px; top: 70px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                            <p:ajax event="dateSelect" update="@this" process="@this"/>
+                        </p:calendar>
+
+                        <strong><h:outputText value="Hora Inicial: " style="position: absolute; left: 50px; top: 105px;"/></strong>
+                        <p:inputMask id="nuevaHoraInicial" style="position: absolute; left: 200px; top: 100px" value="#{controlReservaAreaTrabajo.prestamoReserva.horainicial}" mask="99:00">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputMask>
+
+                        <strong><h:outputText value="Hora Final: " style="position: absolute; left: 50px; top: 135px;"/></strong>
+                        <p:inputMask id="nuevaHoraFinal" style="position: absolute; left: 200px; top: 130px" value="#{controlReservaAreaTrabajo.prestamoReserva.horafinal}" mask="99:00">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputMask>
+
+                        <strong><h:outputText value="Guia Trabajo: " style="position: absolute; left: 50px; top: 165px;"/></strong>
+                        <p:inputText id="nuevaGuiaTrabajo" readonly="true" value="#{controlReservaAreaTrabajo.prestamoReserva.guiatrabajo.nombre}" style="position: absolute; left: 200px; top: 160px"/>
+                        <p:commandButton value=" " icon="ui-icon-search" style="position: absolute; left: 360px; top: 160px; width: 25px; height: 25px" process="@this" actionListener="#{controlReservaAreaTrabajo.dispararDialogoGuiaTrabajo()}"/>
+
+
+                        <strong><h:outputText value="Area de Trabajo: " style="position: absolute; left: 50px; top: 195px;"/></strong>
+                        <p:inputText id="nuevaAreaTrabajo" readonly="true" value="#{controlReservaAreaTrabajo.prestamoReserva.areatrabajo.nombrearea}" style="position: absolute; left: 200px; top: 190px"/>
+                        <p:commandButton value=" " icon="ui-icon-search" style="position: absolute; left: 360px; top: 190px; width: 25px; height: 25px" process="@this" actionListener="#{controlReservaAreaTrabajo.dispararDialogoAreaTrabajo()}"/>
+
+                        <strong><h:outputText value="Tipo de Actividad: " style="position: absolute; left: 50px; top: 225px;"/></strong>
+                        <p:inputText id="nuevaTipoActividad" value="#{controlReservaAreaTrabajo.prestamoReserva.tipoactividad}"  style="position: absolute; left: 200px; top: 220px">
+                            <p:ajax event="change" update="@this" process="@this"/>
+                        </p:inputText>
+
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 280px" actionListener="#{controlReservaAreaTrabajo.registrarPrestamoDeAreaTrabajo()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 280px" actionListener="#{controlReservaAreaTrabajo.cancelarPrestamoDeAreaTrabajo()}" process="@this" onclick="NuevaSolicitudPrestamo.hide()"/>
+
+                    </p:dialog>
+
+                    <p:dialog id="errorDatosObligatorios"  header="ATENCION !!!" widgetVar="errorDatosObligatorios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Todos los campos son obligatorios" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog header="Guias de Trabajo" widgetVar="GuiasDialogo" draggable="false" resizable="false" closable="false" id="GuiasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovGuias" style="font-size: 11px; width: 420px" var="guia" value="#{controlReservaAreaTrabajo.listaGuiasTrabajo}" rowKey="#{guia.secuencia}"
+                                     selection="#{controlReservaAreaTrabajo.guiaTrabajoSeleccionada}" selectionMode="single" widgetVar="lovGuias" scrollable="true" scrollHeight="250" scrollWidth="420"
+                                     filteredValue="#{controlReservaAreaTrabajo.filtrarListaGuiasTrabajo}" emptyMessage="No se encontrarón resultados en la busqueda">              
+                            <p:ajax event="rowSelect" listener="#{controlReservaAreaTrabajo.activarAceptar()}" update=":form:aceptarG"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Guia: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovGuias.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{guia.codigo}" width="50" filterStyle="width: 30px" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{guia.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{guia.nombre}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{guia.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarG" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlReservaAreaTrabajo.aceptar}" onclick="GuiasDialogo.hide(), lovGuias.clearFilters();" actionListener="#{controlReservaAreaTrabajo.seleccionarGuiaTrabajo()}" update="lovGuias, aceptarG" process="@this">
+                            <p:resetInput target=":form:lovGuias:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasG" style="position: relative; left: 230px" value="Cancelar" onclick="GuiasDialogo.hide(), lovGuias.clearFilters();" actionListener="#{controlReservaAreaTrabajo.cancelarGuiaTrabajo()}" update="lovGuias" process="@this">
+                            <p:resetInput target=":form:lovGuias:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Areas de Trabajo" widgetVar="AreaDialogo" draggable="false" resizable="false" closable="false" id="AreaDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovAreas" style="font-size: 11px; width: 420px" var="area" value="#{controlReservaAreaTrabajo.listaAreasTrabajo}" rowKey="#{area.secuencia}"
+                                     selection="#{controlReservaAreaTrabajo.areaTrabajoSeleccionado}" selectionMode="single" widgetVar="lovAreas" scrollable="true" scrollHeight="250" scrollWidth="420"
+                                     filteredValue="#{controlReservaAreaTrabajo.filtrarListaAreasTrabajo}" emptyMessage="No se encontrarón resultados en la busqueda">              
+                            <p:ajax event="rowSelect" listener="#{controlReservaAreaTrabajo.activarAceptar()}" update=":form:aceptarA"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Guia: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovAreas.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{area.codigo}" width="50" filterStyle="width: 30px" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{area.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{area.nombrearea}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{area.nombrearea}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarA" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlReservaAreaTrabajo.aceptar}" onclick="AreaDialogo.hide(), lovAreas.clearFilters();" actionListener="#{controlReservaAreaTrabajo.seleccionarAreaTrabajo()}" update="lovAreas, aceptarA" process="@this">
+                            <p:resetInput target=":form:lovAreas:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasA" style="position: relative; left: 230px" value="Cancelar" onclick="AreaDialogo.hide(), lovAreas.clearFilters();" actionListener="#{controlReservaAreaTrabajo.cancelarAreaTrabajo()}" update="lovAreas" process="@this">
+                            <p:resetInput target=":form:lovAreas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
