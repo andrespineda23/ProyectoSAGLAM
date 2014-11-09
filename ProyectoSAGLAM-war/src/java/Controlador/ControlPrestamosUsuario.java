@@ -78,7 +78,7 @@ public class ControlPrestamosUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = true;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
@@ -89,7 +89,7 @@ public class ControlPrestamosUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = false;
+            permisoMateria = true;
             permisoPrestamo = false;
             permisoReservar = true;
             permisoUsuario = false;

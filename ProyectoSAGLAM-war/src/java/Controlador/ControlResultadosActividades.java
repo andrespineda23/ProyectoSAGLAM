@@ -7,12 +7,13 @@ package Controlador;
 
 import AdministrarInterface.AdministrarResultadosActividadesInterface;
 import Entidades.ResultadosActividades;
+import Entidades.Usuario;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -21,7 +22,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlResultadosActividades {
+public class ControlResultadosActividades implements Serializable {
 
     @EJB
     AdministrarResultadosActividadesInterface administrarResultadosActividades;
@@ -30,15 +31,31 @@ public class ControlResultadosActividades {
     private List<ResultadosActividades> filtrarResultadosActividades;
     private ResultadosActividades guiaTrabajoSeleccionada;
     private ResultadosActividades nuevaResultadosActividades;
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
-    private BigInteger l;
-    private boolean aceptar, guardado;
+    private int cualCelda, tipoLista, index;
+    private boolean guardado;
     private boolean permitirIndex;
-    private Column nombre, apellido, documento, tipousuario;
 
     private int tamano;
+    private Usuario usuarioLogin;
+
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
+    private boolean permisoIngresar;
+    private String infoUsuarioConectado;
 
     public ControlResultadosActividades() {
+
+        infoUsuarioConectado = "Información Usuario Conectado";
+        permisoIngresar = false;
+        permisoReservar = true;
+        permisoPrestamo = true;
+        permisoDocPracticas = true;
+        permisoLaboratorio = true;
+        permisoEstadisticas = true;
+        permisoGuias = true;
+        permisoUsuario = true;
+        permisoMateria = true;
+        permisoCerrarSesion = true;
+
         listResultadosActividades = null;
         permitirIndex = true;
         guardado = true;
@@ -55,13 +72,8 @@ public class ControlResultadosActividades {
      * @param celda columna
      */
     public void cambiarIndice(int indice, int celda) {
-        System.err.println("TIPO LISTA = " + tipoLista);
-
-        if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-        }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+        index = indice;
+        cualCelda = celda;
     }
 
     /**
@@ -82,11 +94,9 @@ public class ControlResultadosActividades {
          */
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoClasesPensiones");
                 administrarResultadosActividades.eliminarResultadosActividades(listResultadosActividades.get(index));
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoClasesPensiones ");
                 administrarResultadosActividades.eliminarResultadosActividades(filtrarResultadosActividades.get(index));
             }
 
@@ -114,6 +124,61 @@ public class ControlResultadosActividades {
     }
 
     public void agregarNuevaResultadosActividades() {
+    }
+
+    /**
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
+     */
+    public void activarFuncionesUsuario() {
+
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = true;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = true;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = true;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
+    }
+
+    /**
+     * Metodo encargado de recibir la secuencia del usuario de una pagina
+     * anterior. Realiza la busqueda el usuario por la secuencia ingresada
+     *
+     * @param secuencia Secuencia del usuario
+     */
+    public void recibiriUsuarioConectado(BigInteger secuencia) {
+        usuarioLogin = administrarResultadosActividades.buscarUsuarioPorSecuencia(secuencia);
+        activarFuncionesUsuario();
     }
 
     public List<ResultadosActividades> getListResultadosActividades() {
@@ -157,6 +222,110 @@ public class ControlResultadosActividades {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public ResultadosActividades getGuiaTrabajoSeleccionada() {
+        return guiaTrabajoSeleccionada;
+    }
+
+    public void setGuiaTrabajoSeleccionada(ResultadosActividades guiaTrabajoSeleccionada) {
+        this.guiaTrabajoSeleccionada = guiaTrabajoSeleccionada;
+    }
+
+    public Usuario getUsuarioLogin() {
+        return usuarioLogin;
+    }
+
+    public void setUsuarioLogin(Usuario usuarioLogin) {
+        this.usuarioLogin = usuarioLogin;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
 }

@@ -23,6 +23,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resultadosactividades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/prestamos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>prestamosenespera</from-outcome>
@@ -32,6 +49,40 @@
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/prestamosenespera.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resultadosactividades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prestamos</from-outcome>
+            <to-view-id>/prestamos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prestamosasignatura</from-outcome>
+            <to-view-id>/prestamosasignatura.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosasignatura.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>login</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>
@@ -74,6 +125,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/resultadosactividades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/areatrabajo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/login.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>asociarmateriausuario</from-outcome>
@@ -90,7 +158,148 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/resultadosactividades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/asociarmateriausuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     
+    <navigation-rule>
+        <from-view-id>/prestamos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/asociarmateriausuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prestamos</from-outcome>
+            <to-view-id>/prestamos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/areatrabajo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prestamos</from-outcome>
+            <to-view-id>/prestamos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamosenespera.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosenespera.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosenespera.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamosusuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosusuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosusuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prestamosasignatura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosasignatura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/prestamosasignatura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividades</from-outcome>
+            <to-view-id>/resultadosactividades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/asociarmateriausuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>areatrabajo</from-outcome>
+            <to-view-id>/areatrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/areatrabajo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>asociarmateriausuario</from-outcome>
+            <to-view-id>/asociarmateriausuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
 </faces-config>

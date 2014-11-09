@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import AdministrarInterface.AdministrarPrestamosInterface;
+import Entidades.Materia;
+import Entidades.MateriaUsuario;
 import Entidades.PrestamoUsuario;
 import Entidades.Usuario;
 import java.io.Serializable;
@@ -13,7 +10,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -25,7 +21,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlPrestamosEspera implements Serializable {
+public class ControlPrestamosAsignatura implements Serializable {
 
     //Parametros
     //Inyeccion del EJB Adminitrador del controlador
@@ -45,10 +41,72 @@ public class ControlPrestamosEspera implements Serializable {
     private PrestamoUsuario prestamoSeleccionado;
     //
     private int indice;
+    //
+    private List<MateriaUsuario> listaMateriaUsuario;
+    private List<MateriaUsuario> filtrarListaMateriaUsuario;
+    private MateriaUsuario materiaUsuarioSeleccionado;
 
-    public ControlPrestamosEspera() {
+    private MateriaUsuario actualMateriaUsuario;
+
+    private boolean aceptar;
+
+    public ControlPrestamosAsignatura() {
+        aceptar = true;
         listaPrestamos = null;
         prestamoSeleccionado = null;
+        listaMateriaUsuario = null;
+        materiaUsuarioSeleccionado = new MateriaUsuario();
+        actualMateriaUsuario = new MateriaUsuario();
+        actualMateriaUsuario.setGrupo("");
+        actualMateriaUsuario.setMateria(new Materia());
+        actualMateriaUsuario.setUsuario(new Usuario());
+    }
+
+    public void dispararDialogoMateriaUsuario() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:MateriaUsuarioDialogo");
+        context.execute("MateriaUsuarioDialogo.show()");
+    }
+
+    public void seleccionarMateriaUsuario() {
+        actualMateriaUsuario = materiaUsuarioSeleccionado;
+        materiaUsuarioSeleccionado = new MateriaUsuario();
+        filtrarListaMateriaUsuario = null;
+        aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:materiaAsignatura");
+        context.update("form:grupoAsignatura");
+        context.update("form:docenteAsignatura");
+    }
+
+    public void cancelarMateriaUsuario() {
+        materiaUsuarioSeleccionado = new MateriaUsuario();
+        filtrarListaMateriaUsuario = null;
+        aceptar = true;
+    }
+
+    public void buscarPrestamosDeUnaAsignatura() {
+        try {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (actualMateriaUsuario.getSecuencia() != null) {
+                listaPrestamos = administrarPrestamo.obtenerPrestamosDeUnUsuario(actualMateriaUsuario.getUsuario().getSecuencia());
+                context.update("form:datosPrestamo");
+            } else {
+                context.execute("errorSeleccioneMateria.show()");
+            }
+        } catch (Exception e) {
+            System.out.println("Error buscarPrestamosDeUnaAsignatura ControlPrestamosAsignatura : " + e.toString());
+        }
+    }
+
+    public void limpiarResultados() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        listaPrestamos = null;
+        actualMateriaUsuario = new MateriaUsuario();
+        actualMateriaUsuario.setGrupo("");
+        actualMateriaUsuario.setMateria(new Materia());
+        actualMateriaUsuario.setUsuario(new Usuario());
+        context.update("form:PanelTotal");
     }
 
     public void obtenerPosicionTablaPrestamo() {
@@ -56,43 +114,6 @@ public class ControlPrestamosEspera implements Serializable {
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String type = map.get("t"); // type attribute of node
         indice = Integer.parseInt(type);
-    }
-
-    public void validarPrestamoEnEspera() {
-        if (prestamoSeleccionado != null) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:validarPrestamo");
-            context.execute("validarPrestamo.show()");
-        }
-    }
-
-    public void aceptarValidacionPrestamo() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        try {
-            prestamoSeleccionado.getPrestamo().setEstadosolicitud("ACEPTADO");
-            administrarPrestamo.modificarEstadoPrestamo(prestamoSeleccionado);
-            prestamoSeleccionado = null;
-            indice = -1;
-            listaPrestamos = null;
-            getListaPrestamos();
-            context.update("form:datosPrestamosEspera");
-
-            FacesMessage msg = new FacesMessage("Información", "El prestamo validado exitosamente");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-        } catch (Exception e) {
-            System.out.println("Error aceptarValidacionPrestamo ControlPrestamosEspera : " + e.toString());
-            FacesMessage msg = new FacesMessage("Información", "Ocurrio un error en el proceso, intente nuevamente");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-        }
-
-    }
-
-    public void cancelarValidacionPrestamo() {
-        prestamoSeleccionado = null;
-        indice = -1;
-        RequestContext.getCurrentInstance().update("form:datosPrestamosEspera");
     }
 
     /**
@@ -148,7 +169,13 @@ public class ControlPrestamosEspera implements Serializable {
         }
     }
 
-    //GET - SET Variables
+    public void activarAceptar() {
+        if (aceptar == true) {
+            aceptar = false;
+        }
+    }
+
+    //GET-SET
     public Usuario getUsuarioLogin() {
         return usuarioLogin;
     }
@@ -221,6 +248,14 @@ public class ControlPrestamosEspera implements Serializable {
         this.permisoCerrarSesion = permisoCerrarSesion;
     }
 
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
     public boolean isPermisoIngresar() {
         return permisoIngresar;
     }
@@ -238,9 +273,6 @@ public class ControlPrestamosEspera implements Serializable {
     }
 
     public List<PrestamoUsuario> getListaPrestamos() {
-        if (listaPrestamos == null) {
-            listaPrestamos = administrarPrestamo.obtenerPrestamosEnProcesoDeEspera();
-        }
         return listaPrestamos;
     }
 
@@ -264,12 +296,45 @@ public class ControlPrestamosEspera implements Serializable {
         this.prestamoSeleccionado = prestamoSeleccionado;
     }
 
-    public boolean isPermisoLaboratorio() {
-        return permisoLaboratorio;
+    public List<MateriaUsuario> getListaMateriaUsuario() {
+        listaMateriaUsuario = administrarPrestamo.buscarMateriasUsuarios();
+        return listaMateriaUsuario;
     }
 
-    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
-        this.permisoLaboratorio = permisoLaboratorio;
+    public void setListaMateriaUsuario(List<MateriaUsuario> listaMateriaUsuario) {
+        this.listaMateriaUsuario = listaMateriaUsuario;
+    }
+
+    public List<MateriaUsuario> getFiltrarListaMateriaUsuario() {
+        return filtrarListaMateriaUsuario;
+    }
+
+    public void setFiltrarListaMateriaUsuario(List<MateriaUsuario> filtrarListaMateriaUsuario) {
+        this.filtrarListaMateriaUsuario = filtrarListaMateriaUsuario;
+    }
+
+    public MateriaUsuario getMateriaUsuarioSeleccionado() {
+        return materiaUsuarioSeleccionado;
+    }
+
+    public void setMateriaUsuarioSeleccionado(MateriaUsuario materiaUsuarioSeleccionado) {
+        this.materiaUsuarioSeleccionado = materiaUsuarioSeleccionado;
+    }
+
+    public MateriaUsuario getActualMateriaUsuario() {
+        return actualMateriaUsuario;
+    }
+
+    public void setActualMateriaUsuario(MateriaUsuario actualMateriaUsuario) {
+        this.actualMateriaUsuario = actualMateriaUsuario;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }

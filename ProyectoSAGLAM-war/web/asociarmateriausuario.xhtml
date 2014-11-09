@@ -16,15 +16,15 @@
 
                     <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoReservar}"/>
-                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoPrestamo}" />
-                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoDocPracticas}"/>
-                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoGuias}"/>
-                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoEstadisticas}"/>
-                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoUsuario}"/>
-                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoLaboratorio}" process="@this"/>
-                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}" action="login"/>
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoReservar}"  process="@this"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoPrestamo}" actionListener="#{controlPrestamos.recibiriUsuarioConectado(controlAsociarMateriaUsuario.usuarioLogin.secuencia)}" action="prestamos" process="@this"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoDocPracticas}"  process="@this" actionListener="#{controlResultadosActividades.recibiriUsuarioConectado(controlAsociarMateriaUsuario.usuarioLogin.secuencia)}" action="resultadosactividades"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoGuias}"  process="@this" />
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoEstadisticas}"  process="@this"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoUsuario}"  process="@this"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="true"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlAsociarMateriaUsuario.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlAsociarMateriaUsuario.usuarioLogin.secuencia)}"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this"/>
 
                     </p:panel>
 
@@ -36,21 +36,65 @@
                         <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" disabled="#{controlAsociarMateriaUsuario.permisoIngresar}" process="@this"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
-                            <legend style="color: blue"><strong>Areas de Trabajo</strong></legend>
+                            <legend style="color: blue"><strong>Asociar Materia a Usuario</strong></legend>
 
-                            <p:commandButton id="ADICIONAR" value="Adicionar" style="position: absolute; top: 430px; left: 700px; text-align: center" process="@this" />
+                            <h:outputText value="Materia" style="position: absolute; left: 50px; top: 70px;font-size: 13px;"/>
+                            <p:inputText id="materiaUsuario" readonly="true" value="#{controlAsociarMateriaUsuario.nuevaAsociacionMateria.materia.nombre}" style="position: absolute; left: 200px; top: 65px;"/>
+                            <p:commandButton value="Buscar" style="position: absolute; left: 360px; top: 65px" actionListener="#{controlAsociarMateriaUsuario.dispararDialogoMaterias()}" process="@this"/>
 
-                            
-                            
+                            <h:outputText value="Grupo Materia" style="position: absolute; left: 50px; top: 130px;font-size: 13px;"/>
+                            <p:inputText id="grupoMateriaUsuario" value="#{controlAsociarMateriaUsuario.nuevaAsociacionMateria.grupo}" style="position: absolute; left: 200px; top: 125px;">
+                                <p:ajax event="change" update="@this" process="@this"/>
+                            </p:inputText>
+
+                            <p:commandButton id="ADICIONAR" value="Aceptar" style="position: absolute; top: 250px; left: 700px; text-align: center" process="@this" actionListener="#{controlAsociarMateriaUsuario.asociarNuevaMateriaAUsuario()}" />
+
                         </fieldset>
 
                     </p:panel>
-                    
+
                     <p:dialog id="errorDatosNull"  header="ATENCION !!!" widgetVar="errorDatosNull"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Todos los campos son obligatorios" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+
+                    <p:dialog header="Materias" widgetVar="MateriaDialogo" draggable="false" resizable="false" closable="false" id="MateriaDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovMateria" style="font-size: 11px; width: 420px" var="materia" value="#{controlAsociarMateriaUsuario.listaMaterias}" rowKey="#{materia.secuencia}"
+                                     selection="#{controlAsociarMateriaUsuario.materiaSeleccionada}" selectionMode="single" widgetVar="lovMateria" scrollable="true" scrollHeight="250" scrollWidth="420"
+                                     filteredValue="#{controlAsociarMateriaUsuario.filtrarListaMaterias}" emptyMessage="No se encontrarón resultados en la busqueda">              
+                            <p:ajax event="rowSelect" listener="#{controlAsociarMateriaUsuario.activarAceptar()}" update=":form:aceptarM"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Materia: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovMateria.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{materia.codigo}" width="50" filterStyle="width: 30px" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{materia.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{materia.nombre}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{materia.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{materia.planestudio}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Plan Estudio" />
+                                </f:facet>
+                                <h:outputText value="#{materia.planestudio}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarM" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlAsociarMateriaUsuario.aceptar}" onclick="MateriaDialogo.hide(), lovMateria.clearFilters();" actionListener="#{controlAsociarMateriaUsuario.seleccionarMateria()}" update="lovMateria, aceptarM, materiaUsuario" process="@this">
+                            <p:resetInput target=":form:lovMateria:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasM" style="position: relative; left: 230px" value="Cancelar" onclick="MateriaDialogo.hide(), lovMateria.clearFilters();" actionListener="#{controlAsociarMateriaUsuario.cancelarMateria()}" update="lovMateria" process="@this">
+                            <p:resetInput target=":form:lovMateria:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
 
                 </h:form>
             </ui:define>

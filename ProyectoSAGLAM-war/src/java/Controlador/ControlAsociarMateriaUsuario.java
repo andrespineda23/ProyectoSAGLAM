@@ -41,24 +41,35 @@ public class ControlAsociarMateriaUsuario implements Serializable {
 
     private MateriaUsuario nuevaAsociacionMateria;
 
+    private boolean aceptar;
+
     public ControlAsociarMateriaUsuario() {
         nuevaAsociacionMateria = new MateriaUsuario();
         nuevaAsociacionMateria.setMateria(new Materia());
         listaMaterias = null;
         materiaSeleccionada = null;
+        aceptar = true;
     }
 
     public void seleccionarMateria() {
         nuevaAsociacionMateria.setMateria(materiaSeleccionada);
         materiaSeleccionada = new Materia();
         filtrarListaMaterias = null;
+        aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("");
+        context.update("form:materiaUsuario");
     }
 
     public void cancelarMateria() {
         materiaSeleccionada = new Materia();
         filtrarListaMaterias = null;
+        aceptar = true;
+    }
+
+    public void dispararDialogoMaterias() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:MateriaDialogo");
+        context.execute("MateriaDialogo.show()");
     }
 
     public void asociarNuevaMateriaAUsuario() {
@@ -122,7 +133,7 @@ public class ControlAsociarMateriaUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = true;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
@@ -133,11 +144,17 @@ public class ControlAsociarMateriaUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = false;
+            permisoMateria = true;
             permisoPrestamo = false;
             permisoReservar = true;
             permisoUsuario = false;
             permisoLaboratorio = false;
+        }
+    }
+
+    public void activarAceptar() {
+        if (aceptar == true) {
+            aceptar = false;
         }
     }
 
@@ -238,6 +255,7 @@ public class ControlAsociarMateriaUsuario implements Serializable {
     }
 
     public List<Materia> getListaMaterias() {
+        listaMaterias = administrarMateriaUsuario.obtenerMaterias();
         return listaMaterias;
     }
 
@@ -267,6 +285,14 @@ public class ControlAsociarMateriaUsuario implements Serializable {
 
     public void setNuevaAsociacionMateria(MateriaUsuario nuevaAsociacionMateria) {
         this.nuevaAsociacionMateria = nuevaAsociacionMateria;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }
