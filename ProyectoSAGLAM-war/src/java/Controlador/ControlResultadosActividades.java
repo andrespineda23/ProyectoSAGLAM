@@ -8,13 +8,25 @@ package Controlador;
 import AdministrarInterface.AdministrarResultadosActividadesInterface;
 import Entidades.ResultadosActividades;
 import Entidades.Usuario;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -42,8 +54,17 @@ public class ControlResultadosActividades implements Serializable {
     private boolean permisoIngresar;
     private String infoUsuarioConectado;
 
+    private final String server = "192.168.0.15";
+    private final int port = 21;
+    private final String user = "";
+    private final String pass = "";
+
+    private FTPClient ftpClient;
+    private DefaultStreamedContent download;
+
     public ControlResultadosActividades() {
 
+        ftpClient = new FTPClient();
         infoUsuarioConectado = "Información Usuario Conectado";
         permisoIngresar = false;
         permisoReservar = true;
@@ -61,6 +82,58 @@ public class ControlResultadosActividades implements Serializable {
         guardado = true;
         tamano = 270;
         nuevaResultadosActividades = new ResultadosActividades();
+    }
+
+    public void conectarAlFTP() {
+        try {
+            ftpClient.connect(server, port);
+            System.out.println("2");
+            //ftpClient.login(user, pass);
+            ftpClient.enterLocalPassiveMode();
+            System.out.println("3");
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            System.out.println("4");
+        } catch (Exception e) {
+            System.out.println("Error en conectarAlFTP ControlResultadosActividades : " + e.toString());
+        }
+    }
+
+    public void descargarArchivoFTP() throws IOException {
+        try {
+            conectarAlFTP();
+            /*
+             System.out.println("ftpClient : " + ftpClient.getRemoteAddress().getHostAddress());
+             final String rutaX = "/ArchivosResultados/HV AFPM.pdf";
+             String remoteFile1 = rutaX;
+             File downloadFile1 = new File("C:/FTP/HV AFPM.pdf");
+             OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+             System.out.println("remoteFile1 : " + remoteFile1);
+             boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
+             System.out.println("success : " + success);
+             if (success) {
+             System.out.println("File #2 has been downloaded successfully.");
+             } else {
+             System.out.println("Ni Mierda !.");
+             }
+             outputStream1.close();
+             ftpClient.logout();
+             File file = new File("HV AFPM.pdf");
+             InputStream input = new FileInputStream(file);
+             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+             setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
+             */
+            FileOutputStream fos = null;
+            fos = new FileOutputStream("HV AFPM.pdf");
+            boolean validarDescarga = ftpClient.retrieveFile("/ArchivosResultados/HV AFPM.pdf", fos);
+            if (validarDescarga == true) {
+                System.out.println("Yeah !");
+            } else {
+                System.out.println("No :S");
+            }
+            ftpClient.logout();
+        } catch (Exception e) {
+            System.out.println("Error descargarArchivoFTP  ControlResultadosActividades : " + e.toString());
+        }
     }
 
     /**
@@ -328,4 +401,11 @@ public class ControlResultadosActividades implements Serializable {
         this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
+    public void setDownload(DefaultStreamedContent download) {
+        this.download = download;
+    }
+
+    public DefaultStreamedContent getDownload() throws Exception {
+        return download;
+    }
 }
