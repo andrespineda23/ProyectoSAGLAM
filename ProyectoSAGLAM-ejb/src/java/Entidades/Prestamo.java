@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prestamo.findByTipoactividad", query = "SELECT p FROM Prestamo p WHERE p.tipoactividad = :tipoactividad"),
     @NamedQuery(name = "Prestamo.findByEstadosolicitud", query = "SELECT p FROM Prestamo p WHERE p.estadosolicitud = :estadosolicitud")})
 public class Prestamo implements Serializable {
+    @JoinColumn(name = "usuario", referencedColumnName = "secuencia")
+    @ManyToOne
+    private Usuario usuario;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -193,6 +196,14 @@ public class Prestamo implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Prestamo[ secuencia=" + secuencia + " ]";
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
 }

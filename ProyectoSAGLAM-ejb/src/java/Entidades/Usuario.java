@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByActivo", query = "SELECT u FROM Usuario u WHERE u.activo = :activo"),
     @NamedQuery(name = "Usuario.findByNumerodocumento", query = "SELECT u FROM Usuario u WHERE u.numerodocumento = :numerodocumento")})
 public class Usuario implements Serializable {
+    @OneToMany(mappedBy = "usuario")
+    private Collection<Prestamo> prestamoCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -233,6 +235,15 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Usuario[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Prestamo> getPrestamoCollection() {
+        return prestamoCollection;
+    }
+
+    public void setPrestamoCollection(Collection<Prestamo> prestamoCollection) {
+        this.prestamoCollection = prestamoCollection;
     }
 
 }

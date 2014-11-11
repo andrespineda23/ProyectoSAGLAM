@@ -15,14 +15,15 @@
 
                     <p:panel  id="PanelOpciones" header="Opciones" style="position: absolute; top: 120px; left: 100px; width: 200px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 100px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 150px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 200px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 300px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 350px; left: 10px; width: 190px; text-align: center" disabled="true"/>
-                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 400px; left: 10px; width: 190px; text-align: center" disabled="true"/>
+                        <p:commandButton id="RESERVAR" value="Reservar" style="position: absolute; top: 50px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoReservar}"  process="@this"/>
+                        <p:commandButton id="PRESTAMOS" value="Prestamos" style="position: absolute; top: 90px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoPrestamo}" actionListener="#{controlPrestamos.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}" action="prestamos" process="@this"/>
+                        <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoDocPracticas}"  process="@this" actionListener="#{controlResultadosActividades.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}" action="resultadosactividades"/>
+                        <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoGuias}"  process="@this" />
+                        <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoEstadisticas}"  process="@this"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoUsuario}"  process="@this" action="loginAusuario" actionListener="#{controlUsuario.usuarioRecibidoConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
+                        <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
+                        <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this"/>
 
                     </p:panel>
 
@@ -37,7 +38,7 @@
                             <legend style="color: blue"><strong>Usuario</strong></legend>
 
                             <p:commandButton id="CAMBIAR_CONTRASENA" disabled="false" value="Cambiar Contraseña" style="position: absolute; top: 65px; left: 300px; text-align: center" actionListener="#{controlUsuario.dispararDialogoCambiarContrasena()}" process="@this"/>
-                            <p:commandButton id="BLOQUEARUSUARIO" disabled="false" value="Bloquear Usuario" style="position: absolute; top: 195px; left: 310px; text-align: center" action="bloquearusuario" process="@this"/>
+                            <p:commandButton id="BLOQUEARUSUARIO" disabled="#{controlUsuario.permisoBloquearUsuario}" value="Bloquear Usuario" style="position: absolute; top: 195px; left: 310px; text-align: center" action="bloquearusuario" process="@this"/>
 
                         </fieldset>
 
@@ -56,13 +57,13 @@
                         </p:inputText>
 
                         <strong><h:outputText value="Contraseña Nueva : " style="position: absolute; left: 50px; top: 120px;"/></strong>
-                        <p:inputText id="cambiarContrasenaAntigua" value="#{controlUsuario.contrasenaAntigua}"  style="position: absolute; left: 200px; top: 115px">
+                        <p:inputText id="cambiarContrasenaAntigua" value="#{controlUsuario.contrasenaNueva}"  style="position: absolute; left: 200px; top: 115px">
                             <p:ajax event="change" update="@this" process="@this"/>
                         </p:inputText>
 
 
-                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 158px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
-                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 158px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="DialogoCambiarContrasena.hide()"/>
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 230px; top: 158px" actionListener="#{controlUsuario.cambiarContrasena()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 320px; top: 158px" actionListener="#{controlUsuario.cancelarCambioContrasena()}" process="@this" onclick="DialogoCambiarContrasena.hide()"/>
 
                     </p:dialog>
 

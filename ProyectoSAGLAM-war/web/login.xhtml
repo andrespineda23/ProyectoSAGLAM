@@ -20,7 +20,7 @@
                         <p:commandButton id="DOC_PRACTICAS" value="Doc. Practicas" style="position: absolute; top: 130px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoDocPracticas}"  process="@this" actionListener="#{controlResultadosActividades.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}" action="resultadosactividades"/>
                         <p:commandButton id="GUIAS" value="Guias Laboratorio" style="position: absolute; top: 170px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoGuias}"  process="@this" />
                         <p:commandButton id="ESTADISTICAS" value="Estadisticas" style="position: absolute; top: 210px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoEstadisticas}"  process="@this"/>
-                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoUsuario}"  process="@this"/>
+                        <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoUsuario}"  process="@this" action="loginAusuario" actionListener="#{controlUsuario.usuarioRecibidoConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this" action="login"/>
@@ -106,7 +106,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="El usuario ingresado no existe en el sistema" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="contraRecuperada"  header="ATENCION !!!" widgetVar="contraRecuperada"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La contraseña del usuario es : #{controlLogin.contrasenaRecuperada}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
