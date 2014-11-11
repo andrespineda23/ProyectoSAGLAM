@@ -29,6 +29,7 @@
 
                     <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
 
+                        <p:commandButton id="DESCARGAR" value="Descargar" style="position: absolute; top: 45px; left: 590px; text-align: center" actionListener="#{controlResultadosActividades.descargarArchivoFTP()}" process="@this"/>
                         <p:commandButton id="AGREGAR" value="Agregar" style="position: absolute; top: 45px; left: 690px; text-align: center" actionListener="#{controlResultadosActividades.dispararDialogoAgregar()}" process="@this"/>
                         <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 775px; text-align: center" actionListener="#{controlResultadosActividades.borrarResultadosActividades()}" process="@this"/>
 

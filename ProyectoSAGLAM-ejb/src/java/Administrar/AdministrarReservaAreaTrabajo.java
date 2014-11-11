@@ -18,20 +18,42 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
+ * AdministrarReservaAreaTrabajo - SessionBean encargado de realizar las
+ * operaciones de la capa de negocio del ReservaAreaTrabajo
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class AdministrarReservaAreaTrabajo implements AdministrarReservaAreaTrabajoInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaPrestamoUsuarioInterface, el
+     * cua realiza las operaciones relacionadas con el PrestamoUsuario
+     */
     @EJB
     PersistenciaPrestamoUsuarioInterface persistenciaPrestamoUsuario;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaAreaTrabajoInterface, el cua
+     * realiza las operaciones relacionadas con el AreaTrabajo
+     */
     @EJB
     PersistenciaAreaTrabajoInterface persistenciaAreaTrabajo;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaPrestamoInterface, el cua
+     * realiza las operaciones relacionadas con el Prestamo
+     */
     @EJB
     PersistenciaPrestamoInterface persistenciaPrestamo;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaGuiaTrabajoInterface, el cua
+     * realiza las operaciones relacionadas con el GuiaTrabajo
+     */
     @EJB
     PersistenciaGuiaTrabajoInterface persistenciaGuiaTrabajo;
 

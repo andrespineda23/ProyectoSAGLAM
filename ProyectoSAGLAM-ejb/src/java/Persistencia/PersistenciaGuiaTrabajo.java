@@ -14,15 +14,21 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * Persistencia GuiaTrabajo, la cual contiene la informacion de los procesos
+ * realizados por dicha persistencia
  *
  * @author John Pineda
  */
 @Stateless
 public class PersistenciaGuiaTrabajo implements PersistenciaGuiaTrabajoInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crearGuiaTrabajo(GuiaTrabajo guiaTrabajo) {
         try {
             em.persist(guiaTrabajo);
@@ -32,6 +38,7 @@ public class PersistenciaGuiaTrabajo implements PersistenciaGuiaTrabajoInterface
         }
     }
 
+    @Override
     public void eliminarGuiaTrabajo(GuiaTrabajo guiaTrabajo) {
         try {
             em.remove(guiaTrabajo);
@@ -41,6 +48,7 @@ public class PersistenciaGuiaTrabajo implements PersistenciaGuiaTrabajoInterface
         }
     }
 
+    @Override
     public List<GuiaTrabajo> consultarGuiasTrabajo() {
         try {
             em.clear();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Persistencia;
 
 import Entidades.AreaTrabajo;
@@ -15,12 +10,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaAreaTrabajo - Encargada de las operaciones de los datos de la
+ * tabla AreaTrabajo
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class PersistenciaAreaTrabajo implements PersistenciaAreaTrabajoInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 

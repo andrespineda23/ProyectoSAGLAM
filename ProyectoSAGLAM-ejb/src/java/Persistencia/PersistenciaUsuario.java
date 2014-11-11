@@ -16,12 +16,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * Persistencia Usuario, la cual contiene la informacion de los procesos
+ * realizados por dicha persistencia
  *
  * @author John Pineda
  */
 @Stateless
 public class PersistenciaUsuario implements PersistenciaUsuarioInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 

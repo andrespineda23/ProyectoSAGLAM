@@ -13,12 +13,18 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * AdministrarUsuario - SessionBean encargado de realizar las operaciones de la
+ * capa de negocio del Usuario
  *
- * @author John Pineda
+ * @author Andres Pineda
  */
 @Stateful
 public class AdministrarUsuario implements AdministrarUsuarioInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
 

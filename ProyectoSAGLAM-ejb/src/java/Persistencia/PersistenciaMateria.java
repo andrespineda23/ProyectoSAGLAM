@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Persistencia;
 
 import Entidades.Materia;
@@ -15,12 +10,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaMateria - Encargada de las operaciones de los datos de la tabla
+ * Materia
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class PersistenciaMateria implements PersistenciaMateriaInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 

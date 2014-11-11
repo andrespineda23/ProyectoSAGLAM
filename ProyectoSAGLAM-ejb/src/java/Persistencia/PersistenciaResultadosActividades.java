@@ -14,15 +14,21 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaResultadosActividades - Encargada de las operaciones de los datos
+ * de la tabla ResultadosActividades
  *
- * @author John Pineda
+ * @author John Pineda.
  */
 @Stateless
 public class PersistenciaResultadosActividades implements PersistenciaResultadosActividadesInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crearResultadosActividades(ResultadosActividades resultadosActividades) {
         try {
             em.persist(resultadosActividades);
@@ -32,6 +38,7 @@ public class PersistenciaResultadosActividades implements PersistenciaResultados
         }
     }
 
+    @Override
     public void eliminarResultadosActividades(ResultadosActividades resultadosActividades) {
         try {
             em.remove(resultadosActividades);
@@ -41,6 +48,7 @@ public class PersistenciaResultadosActividades implements PersistenciaResultados
         }
     }
 
+    @Override
     public List<ResultadosActividades> consultarResultadosActividades() {
         try {
             em.clear();

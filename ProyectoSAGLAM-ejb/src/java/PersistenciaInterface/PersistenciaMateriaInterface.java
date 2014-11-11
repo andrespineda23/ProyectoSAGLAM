@@ -1,20 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package PersistenciaInterface;
 
 import Entidades.Materia;
 import java.util.List;
 
 /**
+ * Interface de la unidad de persistencia Materia. Posee los metodos de dicha
+ * persistencia
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 public interface PersistenciaMateriaInterface {
-    
+
+    /**
+     * Metodo encargado de consultar las Materias registradas en el sistema
+     *
+     * @return Lista de Materias registradas
+     */
     public List<Materia> consultarMaterias();
-    
+
 }
