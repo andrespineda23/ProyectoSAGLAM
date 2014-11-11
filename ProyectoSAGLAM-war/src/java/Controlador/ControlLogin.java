@@ -41,6 +41,8 @@ public class ControlLogin implements Serializable {
     //
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    private boolean permisoRecordarContrasena;
+    private boolean permisoRegistrarse;
     private String infoUsuarioConectado;
 
     /**
@@ -59,7 +61,8 @@ public class ControlLogin implements Serializable {
         permisoUsuario = true;
         permisoMateria = true;
         permisoCerrarSesion = true;
-
+        permisoRecordarContrasena = true;
+        permisoRegistrarse = true;
         contrasenaRecuperada = null;
         correo = null;
         contrasena = null;
@@ -298,6 +301,7 @@ public class ControlLogin implements Serializable {
             permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = true;
+
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
@@ -321,7 +325,10 @@ public class ControlLogin implements Serializable {
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoRecordarContrasena = false;
+        permisoRegistrarse = false;
         permisoIngresar = true;
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:PanelOpciones");
     }
@@ -346,6 +353,9 @@ public class ControlLogin implements Serializable {
         correo = null;
         contrasena = null;
         numDocumento = null;
+        permisoRecordarContrasena = true;
+        permisoRegistrarse = true;
+        permisoIngresar = false;
 
         nuevoUsuarioRegistrar = new Usuario();
         usuarioLogin = null;
@@ -499,6 +509,22 @@ public class ControlLogin implements Serializable {
 
     public void setPermisoLaboratorio(boolean permisoLaboratorio) {
         this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoRecordarContrasena() {
+        return permisoRecordarContrasena;
+    }
+
+    public void setPermisoRecordarContrasena(boolean permisoRecordarContrasena) {
+        this.permisoRecordarContrasena = permisoRecordarContrasena;
+    }
+
+    public boolean isPermisoRegistrarse() {
+        return permisoRegistrarse;
+    }
+
+    public void setPermisoRegistrarse(boolean permisoRegistrarse) {
+        this.permisoRegistrarse = permisoRegistrarse;
     }
 
 }

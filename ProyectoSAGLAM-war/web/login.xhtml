@@ -23,16 +23,16 @@
                         <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoUsuario}"  process="@this" action="loginAusuario" actionListener="#{controlUsuario.usuarioRecibidoConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
                         <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlLogin.usuarioLogin.secuencia)}"/>
-                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this" action="login"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlLogin.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this" action="usuarioAlogin"/>
 
                     </p:panel>
 
                     <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
 
                         <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlLogin.infoUsuarioConectado}"/></strong>
-                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" actionListener="#{controlLogin.dispararDialogoRecuperar()}" disabled="#{controlLogin.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="RECORDAR_PASS" value="Recordar Contraseña" style="position: absolute; top: 45px; left: 460px; text-align: center" actionListener="#{controlLogin.dispararDialogoRecuperar()}" disabled="#{controlLogin.permisoRecordarContrasena}" process="@this"/>
                         <p:commandButton id="INGRESAR" value="Ingresar" style="position: absolute; top: 45px; left: 650px; text-align: center" actionListener="#{controlLogin.dispararDialogoLogin()}" process="@this" disabled="#{controlLogin.permisoIngresar}"/>
-                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" actionListener="#{controlLogin.dispararDialogoRegistro()}" disabled="#{controlLogin.permisoIngresar}" process="@this"/>
+                        <p:commandButton id="REGISTRAR" value="Registrarse" style="position: absolute; top: 45px; left: 760px; text-align: center" actionListener="#{controlLogin.dispararDialogoRegistro()}" disabled="#{controlLogin.permisoRegistrarse}" process="@this"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
@@ -117,13 +117,13 @@
 
                         <center><strong><h:outputText value="Ingrese las credenciales del usuario" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
-                        <h:outputText value="Correo Electronico: " style="position: absolute; top: 45px; left: 30px;"/>
-                        <p:inputText id="correoLogin" value="#{controlLogin.correo}" style="position: absolute; top: 45px; left: 200px">
+                        <h:outputText value="Correo Electronico: " style="position: absolute; top: 50px; left: 30px;"/>
+                        <p:inputText id="correoLogin" value="#{controlLogin.correo}" style="position: absolute; top: 45px; left: 150px; width: 200px">
                             <p:ajax event="change" process="@this" update="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="Contraseña: " style="position: absolute; top: 75px; left: 30px;"/>
-                        <p:inputText id="contrasenaLogin" value="#{controlLogin.contrasena}" style="position: absolute; top: 75px; left: 200px">
+                        <h:outputText value="Contraseña: " style="position: absolute; top: 80px; left: 30px;"/>
+                        <p:inputText id="contrasenaLogin" value="#{controlLogin.contrasena}" style="position: absolute; top: 75px; left: 150px; width: 200px">
                             <p:ajax event="change" process="@this" update="@this"/>
                         </p:inputText>
 
