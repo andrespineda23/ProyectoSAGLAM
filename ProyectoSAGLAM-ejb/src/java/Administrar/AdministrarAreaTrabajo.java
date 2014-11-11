@@ -14,22 +14,29 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 
 /**
+ * AdministrarAreaTrabajo - SessionBean encargado de realizar las operaciones de
+ * la capa de negocio de la AreaTrabajo
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class AdministrarAreaTrabajo implements AdministrarAreaTrabajoInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaAreaTrabajoInterface, el cua
+     * realiza las operaciones relacionadas con las Area de Trabajo
+     */
     @EJB
     PersistenciaAreaTrabajoInterface persistenciaAreaTrabajo;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
-    
 
-    
     public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia) {
         try {
             Usuario usuario = persistenciaUsuario.buscarUsuarioSecuencia(secuencia);
@@ -39,7 +46,7 @@ public class AdministrarAreaTrabajo implements AdministrarAreaTrabajoInterface {
             return null;
         }
     }
-    
+
     @Override
     public void crearAreaDeTrabajo(AreaTrabajo area) {
         try {
@@ -73,6 +80,7 @@ public class AdministrarAreaTrabajo implements AdministrarAreaTrabajoInterface {
             List<AreaTrabajo> lista = persistenciaAreaTrabajo.buscarAreasDeTrabajo();
             return lista;
         } catch (Exception e) {
+            System.out.println("Error buscarAreasDeTrabajo AdministrarAreaTrabajo : " + e.toString());
             return null;
         }
     }

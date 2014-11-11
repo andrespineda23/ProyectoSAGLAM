@@ -16,12 +16,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaPrestamoUsuario - Encargada de las operaciones de los datos de la
+ * tabla PrestamoUsuario
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaPrestamoUsuario implements PersistenciaPrestamoUsuarioInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
@@ -66,7 +71,7 @@ public class PersistenciaPrestamoUsuario implements PersistenciaPrestamoUsuarioI
             return null;
         }
     }
-    
+
     @Override
     public List<PrestamoUsuario> buscarPrestamosAceptados(Date fechaSolicitada) {
         try {

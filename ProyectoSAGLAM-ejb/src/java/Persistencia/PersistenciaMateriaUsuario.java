@@ -15,12 +15,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaMateriaUsuario - Encargada de las operaciones de los datos de la
+ * tabla MateriaUsuario
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaMateriaUsuario implements PersistenciaMateriaUsuarioInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 

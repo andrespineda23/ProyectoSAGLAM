@@ -16,14 +16,25 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * AdministrarResultadosActividades - SessionBean encargado de realizar las
+ * operaciones de la capa de negocio del ResultadoActividades
  *
  * @author John Pineda
  */
 @Stateful
 public class AdministrarResultadosActividades implements AdministrarResultadosActividadesInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB
+     * PersistenciaResultadosActividadesInterface, el cua realiza las
+     * operaciones relacionadas con el ResultadosActividades
+     */
     @EJB
     PersistenciaResultadosActividadesInterface persistenciaResultadosActividades;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
 

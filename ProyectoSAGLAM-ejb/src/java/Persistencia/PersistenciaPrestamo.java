@@ -14,12 +14,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * PersistenciaPrestamo - Encargada de las operaciones de los datos de la tabla
+ * Prestamo
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaPrestamo implements PersistenciaPrestamoInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "ProyectoSAGLAM-ejbPU")
     private EntityManager em;
 
