@@ -23,7 +23,7 @@
                         <p:commandButton id="USUARIO" value="Usuario" style="position: absolute; top: 250px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoUsuario}"  process="@this" action="loginAusuario" actionListener="#{controlUsuario.usuarioRecibidoConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
                         <p:commandButton id="MATERIA" value="Asociar Materias" style="position: absolute; top: 290px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoMateria}"  process="@this" action="asociarmateriausuario" actionListener="#{controlAsociarMateriaUsuario.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
                         <p:commandButton id="AREAS_LAB" value="Laboratorio" style="position: absolute; top: 330px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoLaboratorio}" process="@this" action="areatrabajo" actionListener="#{controlAreaTrabajo.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
-                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this"/>
+                        <p:commandButton id="CERRAR_SESION" value="Cerrar Sesion" style="position: absolute; top: 370px; left: 10px; width: 190px; text-align: center" disabled="#{controlUsuario.permisoCerrarSesion}" actionListener="#{controlLogin.cerrarSesion()}"  process="@this" action="usuarioAlogin"/>
 
                     </p:panel>
 
@@ -38,7 +38,7 @@
                             <legend style="color: blue"><strong>Usuario</strong></legend>
 
                             <p:commandButton id="CAMBIAR_CONTRASENA" disabled="false" value="Cambiar Contraseña" style="position: absolute; top: 65px; left: 300px; text-align: center" actionListener="#{controlUsuario.dispararDialogoCambiarContrasena()}" process="@this"/>
-                            <p:commandButton id="BLOQUEARUSUARIO" disabled="#{controlUsuario.permisoBloquearUsuario}" value="Bloquear Usuario" style="position: absolute; top: 195px; left: 310px; text-align: center" action="bloquearusuario" process="@this"/>
+                            <p:commandButton id="BLOQUEARUSUARIO" disabled="#{controlUsuario.permisoBloquearUsuario}" value="Bloquear Usuario" style="position: absolute; top: 195px; left: 310px; text-align: center" action="bloquearusuario" process="@this" actionListener="#{controlBloquearUsuario.recibiriUsuarioConectado(controlUsuario.usuarioRecibido.secuencia)}"/>
 
                         </fieldset>
 

@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -40,6 +41,9 @@ public class ControlBloquearUsuario implements Serializable {
     private boolean aceptar, guardado;
     private boolean permitirIndex;
     private Column nombre, apellido, documento, tipousuario;
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
+    private boolean permisoIngresar;
+    private String infoUsuarioConectado;
 
     private int tamano;
 
@@ -61,6 +65,18 @@ public class ControlBloquearUsuario implements Serializable {
         }
     }
 
+    public void recibiriUsuarioConectado(BigInteger secuencia) {
+        usuarioSeleccionado = administrarBloquearUsuario.consultarUsuarioPorSecuencia(secuencia);
+        activarFuncionesUsuario();
+    }
+
+    public void obtenerPosicionBloquar() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        index = Integer.parseInt(type);
+    }
+
     /**
      * *
      * Metodo encargado de capturar la posicion en la que el usuario a
@@ -77,43 +93,6 @@ public class ControlBloquearUsuario implements Serializable {
             cualCelda = celda;
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
-    }
-
-    /**
-     * *
-     * Metodo encargado de abrirl los filtros de las columnas
-     */
-    public void filtrar() {
-        FacesContext c = FacesContext.getCurrentInstance();
-        if (bandera == 0) {
-            tamano = 246;
-            nombre = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:nombre");
-            nombre.setFilterStyle("width: 170px");
-            apellido = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:apellido");
-            apellido.setFilterStyle("width: 400px");
-            documento = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:documento");
-            documento.setFilterStyle("width: 400px");
-            tipousuario = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:tipousuario");
-            tipousuario.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosBloquearUsuario");
-            System.out.println("Activar");
-            bandera = 1;
-        } else if (bandera == 1) {
-            System.out.println("Desactivar");
-            tamano = 270;
-            nombre = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:nombre");
-            nombre.setFilterStyle("display: none; visibility: hidden;");
-            apellido = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:apellido");
-            apellido.setFilterStyle("display: none; visibility: hidden;");
-            documento = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:documento");
-            documento.setFilterStyle("display: none; visibility: hidden;");
-            tipousuario = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:tipousuario");
-            tipousuario.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosBloquearUsuario");
-            bandera = 0;
-            filtrarUsuario = null;
-            tipoLista = 0;
-        }
     }
 
     /**
@@ -143,6 +122,44 @@ public class ControlBloquearUsuario implements Serializable {
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
+    }
+
+    public void activarFuncionesUsuario() {
+        permisoIngresar = true;
+        infoUsuarioConectado = usuarioSeleccionado.getNombres() + " " + usuarioSeleccionado.getApellidos();
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = true;
+        }
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = true;
+        }
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/

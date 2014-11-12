@@ -435,10 +435,34 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
+        <from-view-id>/resultadosactividades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resultadosactividadesAusuario</from-outcome>
+            <to-view-id>/usuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/usuario.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuarioAlogin</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/usuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>bloquearusuario</from-outcome>
+            <to-view-id>/bloquearusuario.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/bloquearusuario.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>bloquearusuarioAusuario</from-outcome>
+            <to-view-id>/usuario.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
