@@ -7,14 +7,17 @@ package Controlador;
 
 import AdministrarInterface.AdministrarGuiasTrabajoInterface;
 import Entidades.GuiaTrabajo;
+import Entidades.Usuario;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.primefaces.component.column.Column;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -31,49 +34,40 @@ public class ControlGuiasTrabajo implements Serializable {
     private List<GuiaTrabajo> filtrarGuiaTrabajo;
     private GuiaTrabajo guiaTrabajoSeleccionada;
     private GuiaTrabajo nuevaGuiaTrabajo;
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private Usuario usuarioLogin;
+    private int tipoLista, index;
     private BigInteger l;
-    private boolean aceptar, guardado;
     private boolean permitirIndex;
-    private Column nombre, apellido, documento, tipousuario;
-
-    private int tamano;
+    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
+    private boolean permisoIngresar;
+    private boolean banderaCamposVacios;
+    private String infoUsuarioConectado;
+    private int tamano, repetidos;
+    private UploadedFile file;
 
     public ControlGuiasTrabajo() {
         listGuiaTrabajo = null;
         permitirIndex = true;
-        guardado = true;
         tamano = 270;
         nuevaGuiaTrabajo = new GuiaTrabajo();
     }
 
-    /**
-     * *
-     * Metodo encargado de capturar la posicion en la que el usuario a
-     * seleccionado
-     *
-     * @param indice fila
-     * @param celda columna
-     */
-    public void cambiarIndice(int indice, int celda) {
-        System.err.println("TIPO LISTA = " + tipoLista);
-
-        if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-        }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+    public void obtenerPosicionGuiaTrabajo() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        index = Integer.parseInt(type);
     }
 
     /**
-     * *
-     * Metodo encargado de cambiar la bandera tipoLista para el manejo de la
-     * lista que se esta usando
+     * Metodo encargado de recibir la secuencia del usuario de una pagina
+     * anterior. Realiza la busqueda el usuario por la secuencia ingresada
+     *
+     * @param secuencia Secuencia del usuario
      */
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
+    public void recibiriUsuarioConectado(BigInteger secuencia) {
+        usuarioLogin = administrarGuiasTrabajo.consultarUsuarioPorSecuencia(secuencia);
+        activarFuncionesUsuario();
     }
 
     public void borrarGuiaTrabajo() {
@@ -96,11 +90,6 @@ public class ControlGuiasTrabajo implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosClasesPensiones");
             index = -1;
-
-            if (guardado == true) {
-                guardado = false;
-            }
-            context.update("form:ACEPTAR");
         }
 
     }
@@ -114,7 +103,75 @@ public class ControlGuiasTrabajo implements Serializable {
         context.execute("RegistroNuevaGuiaTrabajo.show()");
     }
 
+    public void camposVacios() {
+        if (nuevaGuiaTrabajo.getCodigo() != null && nuevaGuiaTrabajo.getNombre() != null && file != null) {
+            for (int j = 0; j < listGuiaTrabajo.size(); j++) {
+                if (nuevaGuiaTrabajo.getCodigo().equals(listGuiaTrabajo.get(j).getCodigo())) {
+                    repetidos++;
+                }
+            }
+            if (repetidos == 0) {
+                banderaCamposVacios = false;
+            } else {
+                banderaCamposVacios = true;
+            }
+        } else {
+            banderaCamposVacios = true;
+        }
+    }
+
     public void agregarNuevaGuiaTrabajo() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (banderaCamposVacios == false) {
+        } else {
+            if (repetidos != 0) {
+                context.execute("errorCamposVaciosyRepetidos.show()");
+            } else {
+                context.execute("errorCamposVacios.show()");
+            }
+        }
+    }
+
+    /**
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
+     */
+    public void activarFuncionesUsuario() {
+        permisoIngresar = true;
+        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = true;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = true;
+            permisoMateria = true;
+            permisoPrestamo = false;
+            permisoReservar = true;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
     }
 
     public List<GuiaTrabajo> getListGuiaTrabajo() {
@@ -158,6 +215,110 @@ public class ControlGuiasTrabajo implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public Usuario getUsuarioLogin() {
+        return usuarioLogin;
+    }
+
+    public void setUsuarioLogin(Usuario usuarioLogin) {
+        this.usuarioLogin = usuarioLogin;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
     }
 
 }

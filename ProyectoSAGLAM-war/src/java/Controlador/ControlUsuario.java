@@ -75,6 +75,9 @@ public class ControlUsuario implements Serializable {
         paginaAnterior = pagina;
     }
 
+    /**
+     * valida que ninguna campo requerido este vacio
+     */
     public void validarCampos() {
         if (contrasenaAntigua != null && contrasenaNueva != null) {
             camposVacios = false;
@@ -109,6 +112,9 @@ public class ControlUsuario implements Serializable {
         }
     }
 
+    /**
+     * Metodo que inicializa los atributos al cancelar el cambio de contraseña
+     */
     public void cancelarCambioContrasena() {
         RequestContext context = RequestContext.getCurrentInstance();
         contrasenaAntigua = null;

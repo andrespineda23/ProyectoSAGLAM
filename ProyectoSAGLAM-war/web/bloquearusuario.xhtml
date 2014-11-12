@@ -28,9 +28,9 @@
 
                     <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 10px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
-                        <p:commandButton id="BUSCAR" value="Buscar" style="position: absolute; top: 45px; left: 400px; text-align: center"  process="@this"/>
-                        <p:commandButton id="ATRAS" value="Atras" style="position: absolute; top: 45px; left: 798px; text-align: center"  process="@this" action="bloquearusuarioAusuario"/>
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlBloquearUsuario.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 55px; left: 680px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
+                        <p:commandButton id="ATRAS" value="Atras" style="position: absolute; top: 55px; left: 798px; text-align: center"  process="@this" action="bloquearusuarioAusuario"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
@@ -48,7 +48,6 @@
                                          selection="#{controlBloquearUsuario.usuarioSeleccionado}"
                                          selectionMode="single"
                                          >
-                                <p:ajax event="filter" listener="#{controlBloquearUsuario.eventoFiltrar()}"/>
 
                                 <p:column headerText="Nombres" sortBy="#{info.nombres}" filterBy="#{info.nombres}" filterMatchMode="contains" width="133" >                                  
                                     <p:cellEditor>  

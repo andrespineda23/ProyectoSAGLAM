@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Interface del adminitrador AreaTrabajo. Posee las operaciones relacionadas
+ * Interface del administrador AreaTrabajo. Posee las operaciones relacionadas
  * con la capa de negocio de la pagina AreaTrabajo
  *
  * @author Andres Pineda

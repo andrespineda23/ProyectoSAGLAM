@@ -24,7 +24,7 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author user
+ * @author JOHN PINEDA
  */
 @ManagedBean
 @SessionScoped
@@ -36,12 +36,18 @@ public class ControlBloquearUsuario implements Serializable {
     private List<Usuario> listUsuario;
     private List<Usuario> filtrarUsuario;
     private Usuario usuarioSeleccionado;
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int tipoLista, index;
     private BigInteger l;
     private boolean aceptar, guardado;
-    private boolean permitirIndex;
-    private Column nombre, apellido, documento, tipousuario;
-    private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
+    private boolean permisoReservar,
+            permisoPrestamo,
+            permisoDocPracticas,
+            permisoGuias,
+            permisoEstadisticas,
+            permisoUsuario,
+            permisoMateria,
+            permisoCerrarSesion,
+            permisoLaboratorio;
     private boolean permisoIngresar;
     private String infoUsuarioConectado;
 
@@ -49,50 +55,30 @@ public class ControlBloquearUsuario implements Serializable {
 
     public ControlBloquearUsuario() {
         listUsuario = null;
-        permitirIndex = true;
         guardado = true;
         tamano = 270;
     }
 
     /**
      * *
-     * Metodo encargado de cambiar la bandera tipoLista para el manejo de la
-     * lista que se esta usando
+     * Metodo encargado de recibir el usuario conectado.
+     *
+     * @param secuencia
      */
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-    }
-
     public void recibiriUsuarioConectado(BigInteger secuencia) {
         usuarioSeleccionado = administrarBloquearUsuario.consultarUsuarioPorSecuencia(secuencia);
         activarFuncionesUsuario();
     }
 
+    /**
+     * metodo usado por el remotecommand para saber en que registro a
+     * seleccionado
+     */
     public void obtenerPosicionBloquar() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String type = map.get("t"); // type attribute of node
         index = Integer.parseInt(type);
-    }
-
-    /**
-     * *
-     * Metodo encargado de capturar la posicion en la que el usuario a
-     * seleccionado
-     *
-     * @param indice fila
-     * @param celda columna
-     */
-    public void cambiarIndice(int indice, int celda) {
-        System.err.println("TIPO LISTA = " + tipoLista);
-
-        if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-        }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     /**
@@ -124,6 +110,10 @@ public class ControlBloquearUsuario implements Serializable {
 
     }
 
+    /**
+     * Metodo encargado de dar los permisos dependiendo del tipo de usuario que
+     * este conectado
+     */
     public void activarFuncionesUsuario() {
         permisoIngresar = true;
         infoUsuarioConectado = usuarioSeleccionado.getNombres() + " " + usuarioSeleccionado.getApellidos();
@@ -204,6 +194,94 @@ public class ControlBloquearUsuario implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
 }
