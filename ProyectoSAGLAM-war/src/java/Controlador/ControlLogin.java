@@ -62,7 +62,7 @@ public class ControlLogin implements Serializable {
         permisoMateria = true;
         permisoCerrarSesion = true;
         permisoRecordarContrasena = true;
-        permisoRegistrarse = true;
+        permisoRegistrarse = false;
         contrasenaRecuperada = null;
         correo = null;
         contrasena = null;
@@ -294,39 +294,39 @@ public class ControlLogin implements Serializable {
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
-            permisoPrestamo = false;
-            permisoReservar = false;
-            permisoUsuario = false;
-            permisoLaboratorio = true;
-
-        }
-        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
-            permisoCerrarSesion = false;
-            permisoDocPracticas = false;
-            permisoEstadisticas = true;
+            permisoEstadisticas = false;
             permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
+
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
-            permisoReservar = true;
+            permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
         permisoRecordarContrasena = false;
-        permisoRegistrarse = false;
+        permisoRegistrarse = true;
         permisoIngresar = true;
 
         RequestContext context = RequestContext.getCurrentInstance();

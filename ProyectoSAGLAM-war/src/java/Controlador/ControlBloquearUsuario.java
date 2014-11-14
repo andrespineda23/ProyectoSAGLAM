@@ -111,24 +111,12 @@ public class ControlBloquearUsuario implements Serializable {
     }
 
     /**
-     * Metodo encargado de dar los permisos dependiendo del tipo de usuario que
-     * este conectado
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
-        permisoIngresar = true;
-        infoUsuarioConectado = usuarioSeleccionado.getNombres() + " " + usuarioSeleccionado.getApellidos();
+
         if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("estudiante")) {
-            permisoCerrarSesion = false;
-            permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
-            permisoPrestamo = false;
-            permisoReservar = false;
-            permisoUsuario = false;
-            permisoLaboratorio = true;
-        }
-        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = true;
@@ -137,19 +125,33 @@ public class ControlBloquearUsuario implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
+        }
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
         }
         if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/

@@ -137,24 +137,23 @@ public class ControlGuiasTrabajo implements Serializable {
      * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
-        permisoIngresar = true;
-        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
+
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
+            permisoEstadisticas = false;
+            permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
@@ -165,13 +164,16 @@ public class ControlGuiasTrabajo implements Serializable {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
-            permisoGuias = true;
-            permisoMateria = true;
+            permisoGuias = false;
+            permisoMateria = false;
             permisoPrestamo = false;
-            permisoReservar = true;
+            permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     public List<GuiaTrabajo> getListGuiaTrabajo() {

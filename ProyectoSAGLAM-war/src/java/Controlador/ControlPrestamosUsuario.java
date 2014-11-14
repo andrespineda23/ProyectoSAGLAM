@@ -14,6 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -60,18 +61,17 @@ public class ControlPrestamosUsuario implements Serializable {
      * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
-        permisoIngresar = true;
-        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
+
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
@@ -89,12 +89,15 @@ public class ControlPrestamosUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
-            permisoReservar = true;
+            permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     //GET - SET Variables
