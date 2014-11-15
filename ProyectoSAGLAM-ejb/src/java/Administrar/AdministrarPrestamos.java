@@ -19,16 +19,30 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
+ * AdministrarGuiasTrabajo - SessionBean encargado de realizar las operaciones
+ * de la capa de negocio de las Guias de Trabajo
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class AdministrarPrestamos implements AdministrarPrestamosInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaPrestamoUsuarioInterface, el cual
+     * realiza las operaciones relacionadas con el PrestamoUsuario
+     */
     @EJB
     PersistenciaPrestamoUsuarioInterface persistenciaPrestamoUsuario;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaMateriaUsuarioInterface, el cual
+     * realiza las operaciones relacionadas con la MateriaUsuario
+     */
     @EJB
     PersistenciaMateriaUsuarioInterface persistenciaMateriaUsuario;
 

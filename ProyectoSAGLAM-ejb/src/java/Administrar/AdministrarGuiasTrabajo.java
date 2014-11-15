@@ -13,12 +13,18 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * AdministrarGuiasTrabajo - SessionBean encargado de realizar las operaciones
+ * de la capa de negocio de las Guias de Trabajo
  *
- * @author John Pineda
+ * @author Andres Pineda
  */
 @Stateful
 public class AdministrarGuiasTrabajo implements AdministrarGuiasTrabajoInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaGuiaTrabajoInterface, el cua
+     * realiza las operaciones relacionadas con la Guia de trabajo
+     */
     @EJB
     PersistenciaGuiaTrabajoInterface persistenciaGuiaTrabajo;
 

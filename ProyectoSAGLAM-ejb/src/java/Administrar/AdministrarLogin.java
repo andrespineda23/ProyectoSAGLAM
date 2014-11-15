@@ -24,12 +24,14 @@ import javax.ejb.Stateless;
 public class AdministrarLogin implements AdministrarLoginInterface {
 
     /**
-     * Inyeccion del EJB de la PersistenciaUniversidad
+     * Inyeccion de dependencia del EJB PersistenciaUniversidadInterface, el cua
+     * realiza las operaciones relacionadas con la Universidad
      */
     @EJB
     PersistenciaUniversidadInterface persistenciaUniversidad;
     /**
-     * Inyeccion del EJB de la PersistenciaUniversidad
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con los Usuarios
      */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
@@ -37,14 +39,6 @@ public class AdministrarLogin implements AdministrarLoginInterface {
     @Override
     public void crearNuevoUsuario(Usuario usuario) {
         try {
-            System.out.println("ADMINISTRAR Nombre: " + usuario.getNombres());
-            System.out.println("ADMINISTRAR Apellido: " + usuario.getApellidos());
-            System.out.println("ADMINISTRAR Contraseña: " + usuario.getContrasena());
-            System.out.println("ADMINISTRAR Correo Electronico: " + usuario.getCorreoelectronico());
-            System.out.println("ADMINISTRAR Numero Documento: " + usuario.getNumerodocumento());
-            System.out.println("ADMINISTRAR Tipo Usuario: " + usuario.getTipousuario());
-            System.out.println("ADMINISTRAR Secuencia: " + usuario.getSecuencia());
-            System.out.println("ADMINISTRAR Activo: " + usuario.getActivo());
             persistenciaUsuario.crearUsuario(usuario);
         } catch (Exception e) {
             System.err.println("Error crearNuevoUsuario AdministrarLogin : " + e.toString());
@@ -94,13 +88,13 @@ public class AdministrarLogin implements AdministrarLoginInterface {
             return null;
         }
     }
-    
-    @Override 
-    public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia){
-        try{
-        Usuario usuario = persistenciaUsuario.buscarUsuarioSecuencia(secuencia);
-        return usuario;
-        }catch(Exception e){
+
+    @Override
+    public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia) {
+        try {
+            Usuario usuario = persistenciaUsuario.buscarUsuarioSecuencia(secuencia);
+            return usuario;
+        } catch (Exception e) {
             System.out.println("Error validarUsuarioRegistradoEnSistema AdministrarLogin : " + e.toString());
             return null;
         }
