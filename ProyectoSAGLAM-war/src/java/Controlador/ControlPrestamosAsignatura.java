@@ -30,24 +30,31 @@ public class ControlPrestamosAsignatura implements Serializable {
     @EJB
     AdministrarPrestamosInterface administrarPrestamo;
 
+    //Usuario que se encuentra actualmente en el sistema
     private Usuario usuarioLogin;
+    //Permisos del usuario conectado
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    //Informacion del usuario conectado
     private String infoUsuarioConectado;
 
-    //
+    //Lista de los prestamos de un usuario 
     private List<PrestamoUsuario> listaPrestamos;
+    //Lista filtrada de los prestamos de un usuario
     private List<PrestamoUsuario> filtrarListaPrestamos;
+    //Prestamo seleccionado de la tabla
     private PrestamoUsuario prestamoSeleccionado;
     //
     private int indice;
-    //
+    //Lista de las asociaciones de materias y usuarios (docentes) registradas
     private List<MateriaUsuario> listaMateriaUsuario;
+    //Lista filtrada de materiasusuarios
     private List<MateriaUsuario> filtrarListaMateriaUsuario;
+    //MatereiaUsuario seleccionada
     private MateriaUsuario materiaUsuarioSeleccionado;
-
+    //MateriaUsuario que se encuentra actualmente seleccionada por el usuario
     private MateriaUsuario actualMateriaUsuario;
-
+    //Variable aceptar que controla el 'Aceptar' de los dialogos
     private boolean aceptar;
 
     public ControlPrestamosAsignatura() {
@@ -62,12 +69,19 @@ public class ControlPrestamosAsignatura implements Serializable {
         actualMateriaUsuario.setUsuario(new Usuario());
     }
 
+    /**
+     * Metodo encargado de dispara el dialogo que visualiza las asociacioes
+     * entre materias y usuarios
+     */
     public void dispararDialogoMateriaUsuario() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:MateriaUsuarioDialogo");
         context.execute("MateriaUsuarioDialogo.show()");
     }
 
+    /**
+     * Metodo encargado de seleccionar la opcion escogida por el usuario
+     */
     public void seleccionarMateriaUsuario() {
         actualMateriaUsuario = materiaUsuarioSeleccionado;
         materiaUsuarioSeleccionado = new MateriaUsuario();
