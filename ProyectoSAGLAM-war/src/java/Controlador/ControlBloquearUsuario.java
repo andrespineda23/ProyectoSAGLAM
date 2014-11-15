@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +24,7 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author user
+ * @author JOHN PINEDA
  */
 @ManagedBean
 @SessionScoped
@@ -35,85 +36,49 @@ public class ControlBloquearUsuario implements Serializable {
     private List<Usuario> listUsuario;
     private List<Usuario> filtrarUsuario;
     private Usuario usuarioSeleccionado;
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int tipoLista, index;
     private BigInteger l;
     private boolean aceptar, guardado;
-    private boolean permitirIndex;
-    private Column nombre, apellido, documento, tipousuario;
+    private boolean permisoReservar,
+            permisoPrestamo,
+            permisoDocPracticas,
+            permisoGuias,
+            permisoEstadisticas,
+            permisoUsuario,
+            permisoMateria,
+            permisoCerrarSesion,
+            permisoLaboratorio;
+    private boolean permisoIngresar;
+    private String infoUsuarioConectado;
 
     private int tamano;
 
     public ControlBloquearUsuario() {
         listUsuario = null;
-        permitirIndex = true;
         guardado = true;
         tamano = 270;
     }
 
     /**
      * *
-     * Metodo encargado de cambiar la bandera tipoLista para el manejo de la
-     * lista que se esta usando
-     */
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-    }
-
-    /**
-     * *
-     * Metodo encargado de capturar la posicion en la que el usuario a
-     * seleccionado
+     * Metodo encargado de recibir el usuario conectado.
      *
-     * @param indice fila
-     * @param celda columna
+     * @param secuencia
      */
-    public void cambiarIndice(int indice, int celda) {
-        System.err.println("TIPO LISTA = " + tipoLista);
-
-        if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-        }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+    public void recibiriUsuarioConectado(BigInteger secuencia) {
+        usuarioSeleccionado = administrarBloquearUsuario.consultarUsuarioPorSecuencia(secuencia);
+        activarFuncionesUsuario();
     }
 
     /**
-     * *
-     * Metodo encargado de abrirl los filtros de las columnas
+     * metodo usado por el remotecommand para saber en que registro a
+     * seleccionado
      */
-    public void filtrar() {
-        FacesContext c = FacesContext.getCurrentInstance();
-        if (bandera == 0) {
-            tamano = 246;
-            nombre = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:nombre");
-            nombre.setFilterStyle("width: 170px");
-            apellido = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:apellido");
-            apellido.setFilterStyle("width: 400px");
-            documento = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:documento");
-            documento.setFilterStyle("width: 400px");
-            tipousuario = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:tipousuario");
-            tipousuario.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosBloquearUsuario");
-            System.out.println("Activar");
-            bandera = 1;
-        } else if (bandera == 1) {
-            System.out.println("Desactivar");
-            tamano = 270;
-            nombre = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:nombre");
-            nombre.setFilterStyle("display: none; visibility: hidden;");
-            apellido = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:apellido");
-            apellido.setFilterStyle("display: none; visibility: hidden;");
-            documento = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:documento");
-            documento.setFilterStyle("display: none; visibility: hidden;");
-            tipousuario = (Column) c.getViewRoot().findComponent("form:datosBloquearUsuario:tipousuario");
-            tipousuario.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosBloquearUsuario");
-            bandera = 0;
-            filtrarUsuario = null;
-            tipoLista = 0;
-        }
+    public void obtenerPosicionBloquar() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        index = Integer.parseInt(type);
     }
 
     /**
@@ -143,6 +108,50 @@ public class ControlBloquearUsuario implements Serializable {
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
+    }
+
+    /**
+     * Metodo encargado de activar las funciones registradas para el usuario que
+     * se encuentra en el sistema
+     */
+    public void activarFuncionesUsuario() {
+
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("estudiante")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = true;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
+        if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("laboratorista")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
+        }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
@@ -187,6 +196,94 @@ public class ControlBloquearUsuario implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public boolean isPermisoReservar() {
+        return permisoReservar;
+    }
+
+    public void setPermisoReservar(boolean permisoReservar) {
+        this.permisoReservar = permisoReservar;
+    }
+
+    public boolean isPermisoPrestamo() {
+        return permisoPrestamo;
+    }
+
+    public void setPermisoPrestamo(boolean permisoPrestamo) {
+        this.permisoPrestamo = permisoPrestamo;
+    }
+
+    public boolean isPermisoDocPracticas() {
+        return permisoDocPracticas;
+    }
+
+    public void setPermisoDocPracticas(boolean permisoDocPracticas) {
+        this.permisoDocPracticas = permisoDocPracticas;
+    }
+
+    public boolean isPermisoGuias() {
+        return permisoGuias;
+    }
+
+    public void setPermisoGuias(boolean permisoGuias) {
+        this.permisoGuias = permisoGuias;
+    }
+
+    public boolean isPermisoEstadisticas() {
+        return permisoEstadisticas;
+    }
+
+    public void setPermisoEstadisticas(boolean permisoEstadisticas) {
+        this.permisoEstadisticas = permisoEstadisticas;
+    }
+
+    public boolean isPermisoUsuario() {
+        return permisoUsuario;
+    }
+
+    public void setPermisoUsuario(boolean permisoUsuario) {
+        this.permisoUsuario = permisoUsuario;
+    }
+
+    public boolean isPermisoMateria() {
+        return permisoMateria;
+    }
+
+    public void setPermisoMateria(boolean permisoMateria) {
+        this.permisoMateria = permisoMateria;
+    }
+
+    public boolean isPermisoCerrarSesion() {
+        return permisoCerrarSesion;
+    }
+
+    public void setPermisoCerrarSesion(boolean permisoCerrarSesion) {
+        this.permisoCerrarSesion = permisoCerrarSesion;
+    }
+
+    public boolean isPermisoLaboratorio() {
+        return permisoLaboratorio;
+    }
+
+    public void setPermisoLaboratorio(boolean permisoLaboratorio) {
+        this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoIngresar() {
+        return permisoIngresar;
+    }
+
+    public void setPermisoIngresar(boolean permisoIngresar) {
+        this.permisoIngresar = permisoIngresar;
+    }
+
+    public String getInfoUsuarioConectado() {
+        return infoUsuarioConectado;
+    }
+
+    public void setInfoUsuarioConectado(String infoUsuarioConectado) {
+        this.infoUsuarioConectado = infoUsuarioConectado;
     }
 
 }

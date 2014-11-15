@@ -7,7 +7,6 @@ package AdministrarInterface;
 
 import Entidades.Usuario;
 import java.math.BigInteger;
-import javax.ejb.Local;
 
 /**
  * Interface del adminitrador Usuario. Posee las operaciones relacionadas con la

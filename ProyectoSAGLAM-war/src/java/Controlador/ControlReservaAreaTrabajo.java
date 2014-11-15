@@ -222,41 +222,43 @@ public class ControlReservaAreaTrabajo implements Serializable {
      * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
-        permisoIngresar = true;
-        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
+
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
-            permisoPrestamo = false;
-            permisoReservar = false;
-            permisoUsuario = false;
-            permisoLaboratorio = true;
-        }
-        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
-            permisoCerrarSesion = false;
-            permisoDocPracticas = false;
-            permisoEstadisticas = true;
+            permisoEstadisticas = false;
             permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
-            permisoReservar = true;
+            permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoIngresar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:PanelOpciones");
     }
 
     public void activarAceptar() {

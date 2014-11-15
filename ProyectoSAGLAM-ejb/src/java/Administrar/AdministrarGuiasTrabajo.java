@@ -7,7 +7,10 @@ package Administrar;
 
 import AdministrarInterface.AdministrarGuiasTrabajoInterface;
 import Entidades.GuiaTrabajo;
+import Entidades.Usuario;
 import PersistenciaInterface.PersistenciaGuiaTrabajoInterface;
+import PersistenciaInterface.PersistenciaUsuarioInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -27,6 +30,8 @@ public class AdministrarGuiasTrabajo implements AdministrarGuiasTrabajoInterface
      */
     @EJB
     PersistenciaGuiaTrabajoInterface persistenciaGuiaTrabajo;
+    @EJB
+    PersistenciaUsuarioInterface persistenciaUsuario;
 
     public void crearGuiaTrabajo(GuiaTrabajo guiaTrabajo) {
         persistenciaGuiaTrabajo.crearGuiaTrabajo(guiaTrabajo);
@@ -41,4 +46,11 @@ public class AdministrarGuiasTrabajo implements AdministrarGuiasTrabajoInterface
         lista = persistenciaGuiaTrabajo.consultarGuiasTrabajo();
         return lista;
     }
+
+    public Usuario consultarUsuarioPorSecuencia(BigInteger secUsuario) {
+        Usuario usuario;
+        usuario = persistenciaUsuario.buscarUsuarioSecuencia(secUsuario);
+        return usuario;
+    }
+
 }

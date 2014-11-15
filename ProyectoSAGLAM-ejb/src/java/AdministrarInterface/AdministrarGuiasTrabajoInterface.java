@@ -6,6 +6,8 @@
 package AdministrarInterface;
 
 import Entidades.GuiaTrabajo;
+import Entidades.Usuario;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -32,9 +34,19 @@ public interface AdministrarGuiasTrabajoInterface {
     public void eliminarGuiaTrabajo(GuiaTrabajo guiaTrabajo);
 
     /**
-     * Metodo encargado de consultar las guias de trabajo registradas
+     * Metodo encargado de traer todas las guias que se encuentrar en la base de
+     * datos
      *
-     * @return Lista de guias de trabajo
+     * @return lista de guias de trabajo
      */
     public List<GuiaTrabajo> consultarGuiasTrabajo();
+
+    /**
+     * Metodo encargado de obtener el usuario conectado en el sistema por medio
+     * de su secuencia
+     *
+     * @param secUsuario Secuencia del usuario
+     * @return Usuario conectado
+     */
+    public Usuario consultarUsuarioPorSecuencia(BigInteger secUsuario);
 }

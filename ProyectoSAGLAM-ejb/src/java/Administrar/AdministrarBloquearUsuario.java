@@ -8,6 +8,7 @@ package Administrar;
 import AdministrarInterface.AdministrarBloquearUsuarioInterface;
 import Entidades.Usuario;
 import PersistenciaInterface.PersistenciaUsuarioInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -29,6 +30,12 @@ public class AdministrarBloquearUsuario implements AdministrarBloquearUsuarioInt
     public List<Usuario> consultarUsuario() {
         List<Usuario> lista;
         lista = persistenciaUsario.buscarUsuariosNOBloquedaos();
-        return lista; 
+        return lista;
+    }
+
+    public Usuario consultarUsuarioPorSecuencia(BigInteger secEmpleado) {
+        Usuario usuario;
+        usuario = persistenciaUsario.buscarUsuarioSecuencia(secEmpleado);
+        return usuario;
     }
 }

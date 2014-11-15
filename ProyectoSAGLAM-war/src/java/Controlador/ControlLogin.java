@@ -41,7 +41,7 @@ public class ControlLogin implements Serializable {
     private String contrasenaRecuperada;
     //Permisos del usuario 
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
-    private boolean permisoIngresar;
+    private boolean permisoIngresar, permisoRecordarContrasena, permisoRegistrarse;
     //Informacion del usuario que se encuentra conectado
     private String infoUsuarioConectado;
 
@@ -61,7 +61,8 @@ public class ControlLogin implements Serializable {
         permisoUsuario = true;
         permisoMateria = true;
         permisoCerrarSesion = true;
-
+        permisoRecordarContrasena = true;
+        permisoRegistrarse = false;
         contrasenaRecuperada = null;
         correo = null;
         contrasena = null;
@@ -293,37 +294,41 @@ public class ControlLogin implements Serializable {
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = true;
-            permisoGuias = true;
-            permisoMateria = true;
-            permisoPrestamo = false;
-            permisoReservar = false;
-            permisoUsuario = false;
-            permisoLaboratorio = true;
-        }
-        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
-            permisoCerrarSesion = false;
-            permisoDocPracticas = false;
-            permisoEstadisticas = true;
+            permisoEstadisticas = false;
             permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = true;
+            permisoLaboratorio = false;
+
+        }
+        if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
+            permisoCerrarSesion = false;
+            permisoDocPracticas = false;
+            permisoEstadisticas = false;
+            permisoGuias = false;
+            permisoMateria = false;
+            permisoPrestamo = false;
+            permisoReservar = false;
+            permisoUsuario = false;
+            permisoLaboratorio = false;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = true;
+            permisoMateria = false;
             permisoPrestamo = false;
-            permisoReservar = true;
+            permisoReservar = false;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
+        permisoRecordarContrasena = false;
+        permisoRegistrarse = true;
         permisoIngresar = true;
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:PanelOpciones");
     }
@@ -348,6 +353,9 @@ public class ControlLogin implements Serializable {
         correo = null;
         contrasena = null;
         numDocumento = null;
+        permisoRecordarContrasena = true;
+        permisoRegistrarse = true;
+        permisoIngresar = false;
 
         nuevoUsuarioRegistrar = new Usuario();
         usuarioLogin = null;
@@ -501,6 +509,22 @@ public class ControlLogin implements Serializable {
 
     public void setPermisoLaboratorio(boolean permisoLaboratorio) {
         this.permisoLaboratorio = permisoLaboratorio;
+    }
+
+    public boolean isPermisoRecordarContrasena() {
+        return permisoRecordarContrasena;
+    }
+
+    public void setPermisoRecordarContrasena(boolean permisoRecordarContrasena) {
+        this.permisoRecordarContrasena = permisoRecordarContrasena;
+    }
+
+    public boolean isPermisoRegistrarse() {
+        return permisoRegistrarse;
+    }
+
+    public void setPermisoRegistrarse(boolean permisoRegistrarse) {
+        this.permisoRegistrarse = permisoRegistrarse;
     }
 
 }

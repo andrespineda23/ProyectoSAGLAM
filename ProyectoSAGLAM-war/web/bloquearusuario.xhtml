@@ -28,11 +28,14 @@
 
                     <p:panel  id="PanelTotal" header="SAGLAM" style="position: absolute; top: 120px; left: 350px; width: 874px; height: 450px;font-size: 12px" > 
 
-                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 10px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
-                        <p:commandButton id="BUSCAR" value="Buscar" style="position: absolute; top: 45px; left: 400px; text-align: center" actionListener="#{controlBloquearUsuario.activarCtrlF11()}" process="@this"/>
+                        <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlBloquearUsuario.infoUsuarioConectado}"/></strong>
+                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 55px; left: 680px; text-align: center" actionListener="#{controlBloquearUsuario.bloquearUsuario()}" process="@this"/>
+                        <p:commandButton id="ATRAS" value="Atras" style="position: absolute; top: 55px; left: 798px; text-align: center"  process="@this" action="bloquearusuarioAusuario"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 100px;width: 825px; height: 310px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>Informacion del Proyecto</strong></legend>
+
+                            <p:remoteCommand name="obtenerPosicionBloquear" actionListener="#{controlBloquearUsuario.obtenerPosicionBloquar()}"/>    
                             <p:dataTable id="datosBloquearUsuario" var="info" rowKey="#{info.secuencia}"  
                                          rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlBloquearUsuario.listUsuario}" 
@@ -45,52 +48,62 @@
                                          selection="#{controlBloquearUsuario.usuarioSeleccionado}"
                                          selectionMode="single"
                                          >
-                                <p:ajax event="filter" listener="#{controlBloquearUsuario.eventoFiltrar()}"/>
 
-                                <p:column headerText="Nombres"  sortBy="#{info.nombres}" filterBy="#{info.nombres}" filterMatchMode="contains" id="nombre" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Nombres" sortBy="#{info.nombres}" filterBy="#{info.nombres}" filterMatchMode="contains" width="133" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.nombres}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.nombres}"  id="editarNombres" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 0)}" process="@this"/> 
+                                            <p:inputText value="#{info.nombres}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionBloquearUsuario([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                 </p:column>
 
-                                <p:column headerText="Apellidos"  sortBy="#{info.apellidos}" filterBy="#{info.apellidos}" filterMatchMode="contains" id="apellido" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="Apellidos" sortBy="#{info.apellidos}" filterBy="#{info.apellidos}" filterMatchMode="contains" width="133" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.apellidos}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.apellidos}"  id="editarApellidos" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 1)}" process="@this"/> 
+                                            <p:inputText value="#{info.apellidos}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionBloquearUsuario([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                 </p:column>
-                                <p:column headerText="N. Documento" sortBy="#{info.numerodocumento}" filterBy="#{info.numerodocumento}" filterMatchMode="contains" id="documento" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="N. Documento" sortBy="#{info.numerodocumento}" filterBy="#{info.numerodocumento}" filterMatchMode="contains" width="133" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.numerodocumento}"  /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.numerodocumento}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.numerodocumento}" maxlength="40" id="editarDocumento" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 2)}" process="@this"/> 
+                                            <p:inputText value="#{info.numerodocumento}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionBloquearUsuario([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                 </p:column>
-                                <p:column headerText="Tipo Usuario" sortBy="#{info.tipousuario}" filterBy="#{info.tipousuario}" filterMatchMode="contains" id="tipousuario" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="Tipo de Usuario" sortBy="#{info.tipousuario}" filterBy="#{info.tipousuario}" filterMatchMode="contains" width="133" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.tipousuario}"  /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.tipousuario}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipousuario}" maxlength="40" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlBloquearUsuario.cambiarIndice(indice, 3)}" process="@this"/> 
+                                            <p:inputText value="#{info.tipousuario}" readonly="true" style="border-radius: 0px; width: 99.5%;"  
+                                                         onselect="obtenerPosicionBloquearUsuario([{name: 't', value: '#{indice}'}]);"
+                                                         onclick="select();"
+                                                         > 
+
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                 </p:column>
 
                             </p:dataTable>
