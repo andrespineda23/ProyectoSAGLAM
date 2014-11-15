@@ -41,8 +41,9 @@ public class ControlLogin implements Serializable {
     private String contrasenaRecuperada;
     //Permisos del usuario 
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
-    private boolean permisoIngresar, permisoRecordarContrasena, permisoRegistrarse;
-    //Informacion del usuario que se encuentra conectado
+    private boolean permisoIngresar;
+    private boolean permisoRecordarContrasena;
+    private boolean permisoRegistrarse;
     private String infoUsuarioConectado;
 
     /**
