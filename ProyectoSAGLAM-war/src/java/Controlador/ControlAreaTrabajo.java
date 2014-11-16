@@ -20,18 +20,35 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
+ * Este controlador es el encargado de la pagina de areatrabajo. Todos los
+ * procesos relacionados con la operaciones de las areas de trabajo este
+ * controlador se encargara de operarlos
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @ManagedBean
 @SessionScoped
 public class ControlAreaTrabajo implements Serializable {
 
+    //Parametros
+    /**
+     * Inyeccion del EJB Adminitrador del controlador este administrador
+     * controla todo los procesos necesarios que el controlador necesite
+     */
     @EJB
     AdministrarAreaTrabajoInterface administrarAreaTrabajo;
 
+    /**
+     * Lista de areas de trabajo de la tabla de la pagina
+     */
     private List<AreaTrabajo> listaAreasDeTrabajo;
+    /**
+     * Lista de los procesos filtrados de la lista de areas de trabajo
+     */
     private List<AreaTrabajo> filtrarListaAreasDeTrabajo;
+    /**
+     * Area de Trabajo seleccionada
+     */
     private AreaTrabajo seleccionarAreaTrabajo;
 
     private AreaTrabajo nuevaAreaTrabajo;

@@ -15,8 +15,11 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 
 /**
+ * Este controlador es el encargado de la pagina de prestamos. Cuando el usuario
+ * desea conocer la informacion relacionada con los prestamos de un usuario,
+ * generales o de una manteria ingresara a esta pantalla
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @ManagedBean
 @SessionScoped
@@ -29,9 +32,12 @@ public class ControlPrestamos implements Serializable {
     @EJB
     AdministrarLoginInterface administrarLogin;
 
+    //Variable que contiene el usuario que se encuentra actualmente en el sistema
     private Usuario usuarioLogin;
+    //Permisos del usuario conectado
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    //Informacion del usuario conectado en el sistema
     private String infoUsuarioConectado;
 
     public ControlPrestamos() {

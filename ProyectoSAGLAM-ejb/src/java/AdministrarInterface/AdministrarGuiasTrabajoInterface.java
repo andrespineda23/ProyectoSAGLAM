@@ -12,25 +12,24 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- * Interface para profesor o laboratorista. contiene las opereaciones para las
- * guias de trabajo
+ * Interface del adminitrador GuiaTrabajo. Posee las operaciones relacionadas
+ * con la capa de negocio de la pagina GuiaTrabajo
  *
- * @author John Pineda
+ * @author Andres Pineda
  */
-@Local
 public interface AdministrarGuiasTrabajoInterface {
 
     /**
-     * Metodo encargado de crar una nueva guia de trabajo
+     * Metodo encargado de crear una guia de trabajo
      *
-     * @param guiaTrabajo guia de trabajo que se va crear
+     * @param guiaTrabajo Guia a crear
      */
     public void crearGuiaTrabajo(GuiaTrabajo guiaTrabajo);
 
     /**
-     * Metodo encargado de eliminar una GuiaTrabajo seleccionada
+     * Metodo encargado de eliminar una guia de trabajo
      *
-     * @param guiaTrabajo guia de trabajo a eliminar
+     * @param guiaTrabajo Guia a eliminar
      */
     public void eliminarGuiaTrabajo(GuiaTrabajo guiaTrabajo);
 

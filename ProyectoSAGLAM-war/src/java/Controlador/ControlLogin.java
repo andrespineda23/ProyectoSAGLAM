@@ -24,9 +24,10 @@ import org.primefaces.context.RequestContext;
 public class ControlLogin implements Serializable {
 
     //Parametros
-    //Inyeccion del EJB Adminitrador del controlador
-    //este administrador controla todo los procesos necesarios
-    //que el controlador necesite
+    /**
+     * Inyeccion del EJB Adminitrador del controlador este administrador
+     * controla todo los procesos necesarios que el controlador necesite
+     */
     @EJB
     AdministrarLoginInterface administrarLogin;
 
@@ -38,7 +39,7 @@ public class ControlLogin implements Serializable {
     private String correo, contrasena, numDocumento;
     //Si se presenta un proceso de recuperar contraseña, esta variable se encargara de almacenarla
     private String contrasenaRecuperada;
-    //
+    //Permisos del usuario 
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
     private boolean permisoRecordarContrasena;

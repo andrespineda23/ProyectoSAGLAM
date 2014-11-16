@@ -16,19 +16,32 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 
 /**
+ * AdministrarMateriaUsuario - SessionBean encargado de realizar las operaciones
+ * de la capa de negocio de los Usuarios
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @Stateless
 public class AdministrarMateriaUsuario implements AdministrarMateriaUsuarioInterface {
 
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con el Usuario
+     */
     @EJB
     PersistenciaUsuarioInterface persistenciaUsuario;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaMateriaInterface, el cua
+     * realiza las operaciones relacionadas con la Materia
+     */
     @EJB
     PersistenciaMateriaInterface persistenciaMateria;
+    /**
+     * Inyeccion de dependencia del EJB PersistenciaMateriaUsuarioInterface, el cua
+     * realiza las operaciones relacionadas con la MateriaUsuario
+     */
     @EJB
     PersistenciaMateriaUsuarioInterface persistenciaMateriaUsuario;
 

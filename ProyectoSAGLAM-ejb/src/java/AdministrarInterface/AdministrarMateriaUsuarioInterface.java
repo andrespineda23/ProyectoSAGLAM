@@ -12,15 +12,34 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
+ * Interface del MateriaUsuario. Esta interface contiene la informacion
+ * pertinente a las operaciones de MateriaUsuario.
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 public interface AdministrarMateriaUsuarioInterface {
 
+    /**
+     * Metodo encargado de obtener el usuario que actualmente se encuentra en el
+     * sistema
+     *
+     * @parnam secuencia Secuencia del Usuario
+     * @return Usuario conectado
+     */
     public Usuario buscarUsuarioPorSecuencia(BigInteger secuencia);
 
+    /**
+     * Metodo encargado de obtener la lista de materias
+     *
+     * @return Lista de materias
+     */
     public List<Materia> obtenerMaterias();
 
+    /**
+     * Metodo encargado de crear la asociacion entre una materia y un usuario
+     *
+     * @param materiaU MateriaUsuario a crear
+     */
     public void registrarAsociacionMateriaUsuario(MateriaUsuario materiaU);
 
 }
