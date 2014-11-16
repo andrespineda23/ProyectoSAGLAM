@@ -106,6 +106,7 @@ public class ControlAreaTrabajo implements Serializable {
      * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
+        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
 
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
