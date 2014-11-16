@@ -9,14 +9,18 @@ import AdministrarInterface.AdministrarResultadosActividadesInterface;
 import Entidades.ResultadosActividades;
 import Entidades.Usuario;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +29,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 
@@ -56,8 +61,8 @@ public class ControlResultadosActividades implements Serializable {
 
     private final String server = "192.168.0.15";
     private final int port = 21;
-    private final String user = "";
-    private final String pass = "";
+    private final String user = "ANDRESPINEDA";
+    private final String pass = "andres.pin51";
 
     private FTPClient ftpClient;
     private DefaultStreamedContent download;
@@ -93,6 +98,13 @@ public class ControlResultadosActividades implements Serializable {
             System.out.println("3");
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             System.out.println("4");
+            int reply = ftpClient.getReplyCode();
+            System.out.println("Respuesta recibida de conexión FTP:" + reply);
+            if (FTPReply.isPositiveCompletion(reply)) {
+                System.out.println("Conectado Satisfactoriamente");
+            } else {
+                System.out.println("Imposible conectarse al servidor");
+            }
         } catch (Exception e) {
             System.out.println("Error en conectarAlFTP ControlResultadosActividades : " + e.toString());
         }
@@ -101,36 +113,41 @@ public class ControlResultadosActividades implements Serializable {
     public void descargarArchivoFTP() throws IOException {
         try {
             conectarAlFTP();
+
+            System.out.println("ftpClient : " + ftpClient.getRemoteAddress().getHostAddress());
+            final String rutaX = "/archivospractica/prueba.txt";
+            String remoteFile1 = rutaX;
+            File downloadFile1 = new File("C:pruebaaaaaa.txt");
+            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+            System.out.println("remoteFile1 : " + remoteFile1);
+            System.out.println("ftpClient.isConnected() : " + ftpClient.isConnected());
+            boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
+            int replicode = ftpClient.getReplyCode();
+            System.out.println("replicode : " + replicode);
+            System.out.println("success : " + success);
+            if (success) {
+                System.out.println("File #2 has been downloaded successfully.");
+            } else {
+                System.out.println("Ni Mierda !.");
+            }
+            outputStream1.close();
+            ftpClient.logout();
             /*
-             System.out.println("ftpClient : " + ftpClient.getRemoteAddress().getHostAddress());
-             final String rutaX = "/ArchivosResultados/HV AFPM.pdf";
-             String remoteFile1 = rutaX;
-             File downloadFile1 = new File("C:/FTP/HV AFPM.pdf");
-             OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
-             System.out.println("remoteFile1 : " + remoteFile1);
-             boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
-             System.out.println("success : " + success);
-             if (success) {
-             System.out.println("File #2 has been downloaded successfully.");
-             } else {
-             System.out.println("Ni Mierda !.");
-             }
-             outputStream1.close();
-             ftpClient.logout();
              File file = new File("HV AFPM.pdf");
              InputStream input = new FileInputStream(file);
              ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
              setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
+
+             FileOutputStream fos = null;
+             fos = new FileOutputStream("HV AFPM.pdf");
+             boolean validarDescarga = ftpClient.retrieveFile("/ArchivosResultados/HV AFPM.pdf", fos);
+             if (validarDescarga == true) {
+             System.out.println("Yeah !");
+             } else {
+             System.out.println("No :S");
+             }
+             ftpClient.logout();
              */
-            FileOutputStream fos = null;
-            fos = new FileOutputStream("HV AFPM.pdf");
-            boolean validarDescarga = ftpClient.retrieveFile("/ArchivosResultados/HV AFPM.pdf", fos);
-            if (validarDescarga == true) {
-                System.out.println("Yeah !");
-            } else {
-                System.out.println("No :S");
-            }
-            ftpClient.logout();
         } catch (Exception e) {
             System.out.println("Error descargarArchivoFTP  ControlResultadosActividades : " + e.toString());
         }

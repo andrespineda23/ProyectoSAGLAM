@@ -20,8 +20,10 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 /**
+ * Controlador encargado de los prestamos que se encuentran en proceso de espera
+ * para ser aceptados o rechazados por el laboratorista
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @ManagedBean
 @SessionScoped
@@ -34,14 +36,19 @@ public class ControlPrestamosEspera implements Serializable {
     @EJB
     AdministrarPrestamosInterface administrarPrestamo;
 
+    //Usuario que se encuentra actualmente en el sistema
     private Usuario usuarioLogin;
+    //Permisos del usuario conectado
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    //Informacion del usuario conectado actualmente
     private String infoUsuarioConectado;
 
-    //
+    //Lista de prestamos ingresados por un usuario que se encuentran en proceso de espera para ser aceptados o rechazados
     private List<PrestamoUsuario> listaPrestamos;
+    //Lista filtrada de la lista de prestamos
     private List<PrestamoUsuario> filtrarListaPrestamos;
+    //Prestamo seleccionado de la tabla
     private PrestamoUsuario prestamoSeleccionado;
     //
     private int indice;
@@ -51,6 +58,9 @@ public class ControlPrestamosEspera implements Serializable {
         prestamoSeleccionado = null;
     }
 
+    /**
+     * Metodo encargado de obtener la posicion de la tabla de prestamos
+     */
     public void obtenerPosicionTablaPrestamo() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -58,6 +68,10 @@ public class ControlPrestamosEspera implements Serializable {
         indice = Integer.parseInt(type);
     }
 
+    /**
+     * Metodo encargado de validar que se haya seleccionado un prestamo para ser
+     * aceptado
+     */
     public void validarPrestamoEnEspera() {
         if (prestamoSeleccionado != null) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -66,6 +80,10 @@ public class ControlPrestamosEspera implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de cambiar el estado de un prestamo a ACEPTADO y es
+     * almacenado en la base de datos
+     */
     public void aceptarValidacionPrestamo() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -89,6 +107,10 @@ public class ControlPrestamosEspera implements Serializable {
 
     }
 
+    /**
+     * Metodo encargado de cancelar el proceso de cambio de estado de un
+     * prestamo
+     */
     public void cancelarValidacionPrestamo() {
         prestamoSeleccionado = null;
         indice = -1;

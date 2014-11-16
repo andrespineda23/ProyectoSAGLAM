@@ -26,32 +26,45 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlReservaAreaTrabajo implements Serializable {
 
+    //Parametros
+    //Inyeccion del EJB Adminitrador del controlador
+    //este administrador controla todo los procesos necesarios
+    //que el controlador necesite
     @EJB
     AdministrarReservaAreaTrabajoInterface administrarReservaAreaTrabajo;
-
+    //Usuario que se encuentra actualmente registrado en el sistema
     private Usuario usuarioLogin;
+    //Permisos del usuario conectado
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    //Informacion del usuario conectado
     private String infoUsuarioConectado;
-    //
+    //Fecha en la cual sera solicitada el prestamo
     private Date fechaSeleccionada;
-    //
+    //Nuevo prestamo asociado a un usuario que sera registrado
     private PrestamoUsuario nuevoPrestamo;
+    //Nuevo objeto de prestamo que sera almacenado en el sistema
     private Prestamo prestamoReserva;
-    //
+    //Lista de prestamos usuario que se encuentra aceptados y que en la fecha solicitada ya tienen un horario establecido
     private List<PrestamoUsuario> listaPrestamos;
+    //Lista filtrada de los prestamos aceptados
     private List<PrestamoUsuario> filtrarListaPrestamos;
-
+    //Lista de areas de trabajo registradas en el sistema
     private List<AreaTrabajo> listaAreasTrabajo;
+    //Lista filtrada de areas de trabajo
     private List<AreaTrabajo> filtrarListaAreasTrabajo;
+    //Area de trabajo seleccionada para el prestamo
     private AreaTrabajo areaTrabajoSeleccionado;
 
+    //Lista de guias de trabajo almacenadas en el sistema
     private List<GuiaTrabajo> listaGuiasTrabajo;
+    //Lista filtrada de guias de trabajo
     private List<GuiaTrabajo> filtrarListaGuiasTrabajo;
+    //Guia de trabajo que sera almacenada en el prestamo
     private GuiaTrabajo guiaTrabajoSeleccionada;
     //
     private int indice, k;
-    //
+    //Variable encargada de activar boton 'Aceptar' de los dialogos
     private boolean aceptar;
 
     public ControlReservaAreaTrabajo() {
@@ -66,6 +79,9 @@ public class ControlReservaAreaTrabajo implements Serializable {
         listaGuiasTrabajo = null;
     }
 
+    /**
+     * Metodo encargado de obtener la posicion de la tabla de prestamos
+     */
     public void obtenerPosicionTablaPrestamo() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -73,12 +89,22 @@ public class ControlReservaAreaTrabajo implements Serializable {
         indice = Integer.parseInt(type);
     }
 
+    /**
+     * Metodo encargado de mostrar el dialogo del registro de una nueva
+     * solicitud de prestamo
+     */
     public void dispararDialogoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:NuevaSolicitudPrestamo");
         context.execute("NuevaSolicitudPrestamo.show()");
     }
 
+    /**
+     * Metodo encargado de validar los datos del nuevo registro del prestamo
+     *
+     * @return true- Los datos estan completos / false- Algun dato se encuentra
+     * vacio
+     */
     public boolean validarDatosReserva() {
         boolean retorno = true;
         if (prestamoReserva.getAreatrabajo().getSecuencia() == null) {
@@ -99,6 +125,10 @@ public class ControlReservaAreaTrabajo implements Serializable {
         return retorno;
     }
 
+    /**
+     * Metodo encargado de almacenar la nueva solicitud de prestamo de un
+     * usuario
+     */
     public void registrarPrestamoDeAreaTrabajo() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -136,6 +166,10 @@ public class ControlReservaAreaTrabajo implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de cancelar el registro de una nueva solicitud de
+     * prestamo
+     */
     public void cancelarPrestamoDeAreaTrabajo() {
         nuevoPrestamo = new PrestamoUsuario();
         prestamoReserva = new Prestamo();
@@ -145,6 +179,10 @@ public class ControlReservaAreaTrabajo implements Serializable {
         areaTrabajoSeleccionado = new AreaTrabajo();
     }
 
+    /**
+     * Metodo encargado de seleccionar una guia de trabajo y enlazarla a la
+     * solicitud de prestamo
+     */
     public void seleccionarGuiaTrabajo() {
         prestamoReserva.setGuiatrabajo(guiaTrabajoSeleccionada);
         guiaTrabajoSeleccionada = new GuiaTrabajo();
@@ -154,12 +192,19 @@ public class ControlReservaAreaTrabajo implements Serializable {
         context.update("form:NuevaSolicitudPrestamo:nuevaGuiaTrabajo");
     }
 
+    /**
+     * Metodo encargado de cancelar la seleccion de la guia de trabajo
+     */
     public void cancelarGuiaTrabajo() {
         guiaTrabajoSeleccionada = new GuiaTrabajo();
         filtrarListaGuiasTrabajo = null;
         aceptar = true;
     }
 
+    /**
+     * Metodo encargado de seleccionar una nueva area de trabajo para la
+     * solicitud de prestamo
+     */
     public void seleccionarAreaTrabajo() {
         prestamoReserva.setAreatrabajo(areaTrabajoSeleccionado);
         areaTrabajoSeleccionado = new AreaTrabajo();
@@ -169,24 +214,39 @@ public class ControlReservaAreaTrabajo implements Serializable {
         context.update("form:NuevaSolicitudPrestamo:nuevaAreaTrabajo");
     }
 
+    /**
+     * Metodo encargado de cancelar la seleccion del area de trabajo
+     */
     public void cancelarAreaTrabajo() {
         areaTrabajoSeleccionado = new AreaTrabajo();
         filtrarListaAreasTrabajo = null;
         aceptar = true;
     }
 
+    /**
+     * Metodo encargado de visualizar el dialogo de areas de trabajo para la
+     * solicitud de prestamo
+     */
     public void dispararDialogoAreaTrabajo() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:AreaDialogo");
         context.execute("AreaDialogo.show()");
     }
 
+    /**
+     * Metodo encargado de visualizar el dialogo de guias de trabajo para la
+     * solicitud de prestamo
+     */
     public void dispararDialogoGuiaTrabajo() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:GuiasDialogo");
         context.execute("GuiasDialogo.show()");
     }
 
+    /**
+     * Metodo encargado de obtener la lista de prestamos aceptados en una fecha
+     * ingresada
+     */
     public void buscarPrestamosSolicitados() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -261,12 +321,16 @@ public class ControlReservaAreaTrabajo implements Serializable {
         context.update("form:PanelOpciones");
     }
 
+    /**
+     * Metodo encargado de cambiar el estado del boton 'Aceptar' de los dialogos
+     */
     public void activarAceptar() {
         if (aceptar == true) {
             aceptar = false;
         }
     }
 
+    //GET _ SET
     public Usuario getUsuarioLogin() {
         return usuarioLogin;
     }

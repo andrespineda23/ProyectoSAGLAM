@@ -93,12 +93,20 @@ public class ControlPrestamosAsignatura implements Serializable {
         context.update("form:docenteAsignatura");
     }
 
+    /**
+     * Metodo encargado de cancelar la seleccion de la materia usuario
+     */
     public void cancelarMateriaUsuario() {
         materiaUsuarioSeleccionado = new MateriaUsuario();
         filtrarListaMateriaUsuario = null;
         aceptar = true;
     }
 
+    /**
+     * Metodo encargado de realizar la busqueda de los prestamos asociados a una
+     * materiausuario, es decir, a una materia y su asociacion con un usuario
+     * especifico
+     */
     public void buscarPrestamosDeUnaAsignatura() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -113,6 +121,9 @@ public class ControlPrestamosAsignatura implements Serializable {
         }
     }
 
+    /**
+     * Metodo encargado de limpiar los datos que se visualizan en la pantalla
+     */
     public void limpiarResultados() {
         RequestContext context = RequestContext.getCurrentInstance();
         listaPrestamos = null;
@@ -123,6 +134,10 @@ public class ControlPrestamosAsignatura implements Serializable {
         context.update("form:PanelTotal");
     }
 
+    /**
+     * Metodo encargado de obtener la posicion en la cual el usuario esta
+     * posicionado en la tabla
+     */
     public void obtenerPosicionTablaPrestamo() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -185,6 +200,10 @@ public class ControlPrestamosAsignatura implements Serializable {
         context.update("form:PanelOpciones");
     }
 
+    /**
+     * Metodo encargado de activar el boton 'Aceptar' de los dialogos de la
+     * pantalla
+     */
     public void activarAceptar() {
         if (aceptar == true) {
             aceptar = false;

@@ -17,8 +17,10 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 
 /**
+ * Metodo encargado de obtener la lista de prestamo asociados a un usuario
+ * especifico
  *
- * @author ANDRES PINEDA
+ * @author Andres Pineda
  */
 @ManagedBean
 @SessionScoped
@@ -30,14 +32,18 @@ public class ControlPrestamosUsuario implements Serializable {
     //que el controlador necesite
     @EJB
     AdministrarPrestamosInterface administrarPrestamo;
-
+    //Usuario que se encuentra actualmente registrado en el sistema
     private Usuario usuarioLogin;
+    //Permisos del usuario que se encuentra en el sistema
     private boolean permisoReservar, permisoPrestamo, permisoDocPracticas, permisoGuias, permisoEstadisticas, permisoUsuario, permisoMateria, permisoCerrarSesion, permisoLaboratorio;
     private boolean permisoIngresar;
+    //Informacion del usuario conectado
     private String infoUsuarioConectado;
-
+    //Lista de prestamos de un usuario 
     private List<PrestamoUsuario> listaPrestamosUsuario;
+    //Lista filtrada de prestamos
     private List<PrestamoUsuario> filtrarListaPrestamosUsuario;
+    //Prestamo seleccionado
     private PrestamoUsuario prestamoSeleccionado;
 
     public ControlPrestamosUsuario() {
