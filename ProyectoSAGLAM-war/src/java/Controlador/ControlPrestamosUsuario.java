@@ -71,13 +71,14 @@ public class ControlPrestamosUsuario implements Serializable {
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = false;
-            permisoGuias = false;
-            permisoMateria = false;
+            permisoEstadisticas = true;
+            permisoGuias = true;
+            permisoMateria = true;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = false;
+            permisoLaboratorio = true;
+
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
@@ -95,9 +96,9 @@ public class ControlPrestamosUsuario implements Serializable {
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = false;
+            permisoMateria = true;
             permisoPrestamo = false;
-            permisoReservar = false;
+            permisoReservar = true;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }

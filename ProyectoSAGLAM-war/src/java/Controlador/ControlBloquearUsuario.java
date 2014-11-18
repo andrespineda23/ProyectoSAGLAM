@@ -120,32 +120,33 @@ public class ControlBloquearUsuario implements Serializable {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = true;
-            permisoGuias = false;
-            permisoMateria = false;
+            permisoGuias = true;
+            permisoMateria = true;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = false;
+            permisoLaboratorio = true;
+
         }
         if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = false;
+            permisoEstadisticas = true;
             permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = false;
+            permisoLaboratorio = true;
         }
         if (usuarioSeleccionado.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = false;
+            permisoMateria = true;
             permisoPrestamo = false;
-            permisoReservar = false;
+            permisoReservar = true;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }

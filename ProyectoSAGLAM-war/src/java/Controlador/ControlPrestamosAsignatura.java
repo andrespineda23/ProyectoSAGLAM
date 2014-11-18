@@ -171,27 +171,28 @@ public class ControlPrestamosAsignatura implements Serializable {
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = false;
+            permisoLaboratorio = true;
+
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("docente")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
-            permisoEstadisticas = false;
+            permisoEstadisticas = true;
             permisoGuias = false;
             permisoMateria = false;
             permisoPrestamo = false;
             permisoReservar = false;
             permisoUsuario = false;
-            permisoLaboratorio = false;
+            permisoLaboratorio = true;
         }
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("laboratorista")) {
             permisoCerrarSesion = false;
             permisoDocPracticas = false;
             permisoEstadisticas = false;
             permisoGuias = false;
-            permisoMateria = false;
+            permisoMateria = true;
             permisoPrestamo = false;
-            permisoReservar = false;
+            permisoReservar = true;
             permisoUsuario = false;
             permisoLaboratorio = false;
         }
