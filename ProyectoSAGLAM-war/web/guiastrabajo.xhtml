@@ -31,7 +31,7 @@
 
                         <strong><h:outputText id="infoUsuarioConectado" style="position: absolute; top: 60px; left: 10px" value="#{controlGuiasTrabajo.infoUsuarioConectado}"/></strong>
                         <p:commandButton id="AGREGAR" value="Agregar" style="position: absolute; top: 45px; left: 690px; text-align: center" actionListener="#{controlGuiasTrabajo.dispararDialogoAgregar()}" process="@this"/>
-                        <p:commandButton id="ELIMINAR" value="Bloquear" style="position: absolute; top: 45px; left: 775px; text-align: center" actionListener="#{controlGuiasTrabajo.borrarGuiaTrabajo()}" process="@this"/>
+                        <p:commandButton id="ELIMINAR" value="Eliminar" style="position: absolute; top: 45px; left: 775px; text-align: center" actionListener="#{controlGuiasTrabajo.borrarGuiaTrabajo()}" process="@this"/>
 
                         <p:remoteCommand name="obtenerPosicionGuiaTrabajo" actionListener="#{controlAreaTrabajo.obtenerPosicionArea()}"/>
 
@@ -85,23 +85,23 @@
                               closable="false" id="RegistroNuevaGuiaTrabajo" widgetVar="RegistroNuevaGuiaTrabajo" showEffect="fade" hideEffect="fade"
                               width="500" height="230" modal="true" style="width: 435px; font-size: 12px;">
 
-                        <center><strong><h:outputText value="Cambiar Contraseña del Usuario Actual" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="Agregar Resultado" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <strong><h:outputText value="Código: " style="position: absolute; left: 20px; top: 80px;"/></strong>
-                        <p:inputText id="cambiarContrasenaNueva" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.codigo}"  style="position: absolute; left: 200px; top: 75px">
+                        <p:inputText id="nuevaCodigo" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.codigo}"  style="position: absolute; left: 200px; top: 75px">
                             <p:ajax event="change" update="@this" process="@this"/>
                         </p:inputText>
 
                         <strong><h:outputText value="Nombre: " style="position: absolute; left: 20px; top: 120px;"/></strong>
-                        <p:inputText id="cambiarContrasenaAntigua" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.nombre}"  style="position: absolute; left: 200px; top: 115px">
+                        <p:inputText id="nuevaNombre" value="#{controlGuiasTrabajo.nuevaGuiaTrabajo.nombre}"  style="position: absolute; left: 200px; top: 115px">
                             <p:ajax event="change" update="@this" process="@this"/>
                         </p:inputText>
 
                         <strong><h:outputText value="Archivo: " style="position: absolute; left: 20px; top: 158px;"/></strong>
                         <p:fileUpload  mode="simple" value="#{controlGuiasTrabajo.file}" style="position: absolute; left: 200px; top: 153px"/>
 
-                        <p:commandButton value="Aceptar" style="position: absolute; left: 250px; top: 190px" actionListener="#{controlLogin.registarNuevoUsuario()}" process="@this"/>
-                        <p:commandButton value="Cancelar" style="position: absolute; left: 350px; top: 190px" actionListener="#{controlLogin.cancelarNuevoRegistroUsuario()}" process="@this" onclick="RegistroNuevaGuiaTrabajo.hide()"/>
+                        <p:commandButton value="Aceptar" style="position: absolute; left: 250px; top: 190px" actionListener="#{controlGuiasTrabajo.agregarNuevaGuiaTrabajo()}" process="@this"/>
+                        <p:commandButton value="Cancelar" style="position: absolute; left: 350px; top: 190px" actionListener="#{controlGuiasTrabajo.cancelarAgregarGuiaTrabajo()}" process="@this" onclick="RegistroNuevaGuiaTrabajo.hide()"/>
 
                     </p:dialog>
 

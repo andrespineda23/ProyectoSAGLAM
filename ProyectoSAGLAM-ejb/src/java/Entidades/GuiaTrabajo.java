@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -36,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GuiaTrabajo.findByNombre", query = "SELECT g FROM GuiaTrabajo g WHERE g.nombre = :nombre"),
     @NamedQuery(name = "GuiaTrabajo.findByRutaarchivo", query = "SELECT g FROM GuiaTrabajo g WHERE g.rutaarchivo = :rutaarchivo")})
 public class GuiaTrabajo implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -43,13 +43,9 @@ public class GuiaTrabajo implements Serializable {
     @Column(name = "secuencia")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "codigo")
     private String codigo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
@@ -139,5 +135,5 @@ public class GuiaTrabajo implements Serializable {
     public String toString() {
         return "Entidades.GuiaTrabajo[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

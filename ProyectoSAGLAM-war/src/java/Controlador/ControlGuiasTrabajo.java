@@ -67,6 +67,7 @@ public class ControlGuiasTrabajo implements Serializable {
      */
     public void recibiriUsuarioConectado(BigInteger secuencia) {
         usuarioLogin = administrarGuiasTrabajo.consultarUsuarioPorSecuencia(secuencia);
+        
         activarFuncionesUsuario();
     }
 
@@ -104,6 +105,8 @@ public class ControlGuiasTrabajo implements Serializable {
     }
 
     public void camposVacios() {
+        System.out.println("ControlGuiasTrabajos camposVacios codigo : " + nuevaGuiaTrabajo.getCodigo());
+        System.out.println("ControlGuiasTrabajos camposVacios nombre : " + nuevaGuiaTrabajo.getNombre());
         if (nuevaGuiaTrabajo.getCodigo() != null && nuevaGuiaTrabajo.getNombre() != null && file != null) {
             for (int j = 0; j < listGuiaTrabajo.size(); j++) {
                 if (nuevaGuiaTrabajo.getCodigo().equals(listGuiaTrabajo.get(j).getCodigo())) {
@@ -122,6 +125,7 @@ public class ControlGuiasTrabajo implements Serializable {
 
     public void agregarNuevaGuiaTrabajo() {
         RequestContext context = RequestContext.getCurrentInstance();
+        camposVacios();
         if (banderaCamposVacios == false) {
         } else {
             if (repetidos != 0) {
@@ -132,11 +136,15 @@ public class ControlGuiasTrabajo implements Serializable {
         }
     }
 
+    public void cancelarAgregarGuiaTrabajo() {
+    }
+
     /**
      * Metodo encargado de activar las funciones registradas para el usuario que
      * se encuentra en el sistema
      */
     public void activarFuncionesUsuario() {
+        infoUsuarioConectado = usuarioLogin.getNombres() + " " + usuarioLogin.getApellidos();
 
         if (usuarioLogin.getTipousuario().equalsIgnoreCase("estudiante")) {
             permisoCerrarSesion = false;
